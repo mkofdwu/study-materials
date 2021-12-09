@@ -1,4 +1,4 @@
-package com.example.hackathon_study_materials
+package com.example.study_materials
 
 import io.flutter.embedding.android.FlutterActivity
 

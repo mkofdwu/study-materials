@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "696762067383",
+    "project_id": "study-materials-b932f",
+    "storage_bucket": "study-materials-b932f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696762067383:android:8dd48b20472dd9db43e032",
+        "android_client_info": {
+          "package_name": "com.example.study_materials"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696762067383-m6cqvpm3pa08jgcj2scfqa9rt07ujj3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeeesDmOmdYHvW5x3HMe-eDU7i5zjyWKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696762067383-m6cqvpm3pa08jgcj2scfqa9rt07ujj3h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
