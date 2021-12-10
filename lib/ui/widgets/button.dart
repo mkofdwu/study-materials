@@ -7,12 +7,14 @@ class MyButton extends StatefulWidget {
   final String text;
   final bool isPrimary;
   final FutureOr<dynamic> Function() onPressed;
+  final bool fillWidth;
 
   const MyButton({
     Key? key,
     required this.text,
     this.isPrimary = true,
     required this.onPressed,
+    this.fillWidth = false,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,7 @@ class _MyButtonState extends State<MyButton> {
           color: widget.isPrimary ? Palette.darkGrey : Palette.lightGrey,
           borderRadius: BorderRadius.circular(20),
         ),
+        alignment: widget.fillWidth ? Alignment.center : null,
         child: Text(
           widget.text.toUpperCase(),
           style: TextStyle(

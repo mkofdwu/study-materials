@@ -27,20 +27,23 @@ class SettingsViewModel extends BaseViewModel {
           'siteUrl': 'TextField:Site url',
           'queryUrl': 'TextField:Query url',
         },
-        onSubmit: (Map<String, dynamic> inputs) async {
+        onSubmit: (inputs, setErrors, back) async {
           final errors = {
             if (inputs['title'].isEmpty) 'title': 'Please enter a title',
             if (inputs['siteUrl'].isEmpty)
               'siteUrl': 'Please enter the site url',
           };
-          if (errors.isNotEmpty) return errors;
+          if (errors.isNotEmpty) {
+            setErrors(errors);
+            return;
+          }
 
           _userStore.currentUser.resourceSites
               .add(ResourceSite.fromMap(inputs));
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
-          return {};
+          back();
         },
       ),
     );
@@ -61,13 +64,16 @@ class SettingsViewModel extends BaseViewModel {
           'siteUrl': resourceSite.siteUrl,
           'queryUrl': resourceSite.queryUrl ?? ''
         },
-        onSubmit: (Map<String, dynamic> inputs) async {
+        onSubmit: (inputs, setErrors, back) async {
           final errors = {
             if (inputs['title'].isEmpty) 'title': 'Please enter a title',
             if (inputs['siteUrl'].isEmpty)
               'siteUrl': 'Please enter the site url',
           };
-          if (errors.isNotEmpty) return errors;
+          if (errors.isNotEmpty) {
+            setErrors(errors);
+            return;
+          }
 
           final updatedResource = ResourceSite.fromMap(inputs);
           final index =
@@ -76,7 +82,7 @@ class SettingsViewModel extends BaseViewModel {
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners(); // update display in this page
-          return {};
+          back();
         },
       ),
     );

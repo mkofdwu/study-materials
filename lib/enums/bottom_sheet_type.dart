@@ -1,1 +1,1 @@
-enum BottomSheetType { info, yesno }
+enum BottomSheetType { info, yesno, choice }

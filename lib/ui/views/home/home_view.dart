@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/ui/views/modules/modules_view.dart';
 import 'package:hackathon_study_materials/ui/views/settings/settings_view.dart';
 import 'package:stacked/stacked.dart';
@@ -14,6 +15,14 @@ class HomeView extends StatelessWidget {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         body: SafeArea(child: _buildBody(model.currentTab)),
+        // a bit awkward to put it here
+        floatingActionButton: model.currentTab == 1
+            ? FloatingActionButton(
+                child: Icon(FluentIcons.add_20_regular),
+                backgroundColor: Palette.darkGrey,
+                onPressed: model.goToAddModule,
+              )
+            : null,
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
           decoration: BoxDecoration(

@@ -8,6 +8,7 @@ class Material {
   String title;
   String url;
   String content; // only for notes
+  bool pinned;
 
   Material({
     required this.id,
@@ -17,6 +18,7 @@ class Material {
     required this.title,
     required this.url,
     required this.content,
+    this.pinned = false,
   });
 
   factory Material.fromDoc(DocumentSnapshot doc) {
@@ -29,6 +31,7 @@ class Material {
       title: data['title'],
       url: data['url'],
       content: data['content'],
+      pinned: data['pinned'],
     );
   }
 
@@ -40,6 +43,7 @@ class Material {
       'title': title,
       'url': url,
       'content': content,
+      'pinned': pinned,
     };
   }
 

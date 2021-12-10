@@ -30,24 +30,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # app architecture
   stacked: ^2.0.0
   stacked_services: ^0.8.0-nullsafety.1
   stacked_themes: ^0.3.0
   observable_ish: ^3.0.0
 
-  # firebase for backend
   firebase_core: ^1.0.2
   firebase_auth: ^1.0.1
   firebase_storage: ^8.0.1
   cloud_firestore: ^1.0.3
 
-  # miscellaneous helpers
-  # image_picker: ^0.7.4
-  # cached_network_image: ^3.0.0
-  # path_provider: ^2.0.1
-  # flutter_image_compress: ^1.0.0
-  # photo_view: ^0.11.1
+  cached_network_image: ^3.0.0
+  http: ^0.13.4
 
 dependency_overrides:
   flutter_statusbarcolor_ns: ^0.4.0

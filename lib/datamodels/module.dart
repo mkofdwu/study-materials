@@ -6,7 +6,7 @@ class Module {
   String id;
   String ownerId;
   String title;
-  String color; // in hex format (e.g. #ffffff)
+  int color;
   List<Topic> topics;
 
   Module({

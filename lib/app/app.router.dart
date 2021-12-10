@@ -9,10 +9,14 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../datamodels/module.dart';
+import '../datamodels/topic.dart';
 import '../ui/views/flexible_form_page/flexible_form_page.dart';
 import '../ui/views/home/home_view.dart';
+import '../ui/views/module/module_view.dart';
 import '../ui/views/sign_in_or_up/sign_in_or_up_view.dart';
 import '../ui/views/startup/startup_view.dart';
+import '../ui/views/topic/topic_view.dart';
 import '../ui/views/welcome_view.dart';
 
 class Routes {
@@ -21,12 +25,16 @@ class Routes {
   static const String signInOrUpView = '/sign-in-or-up-view';
   static const String welcomeView = '/welcome-view';
   static const String flexibleFormPage = '/flexible-form-page';
+  static const String moduleView = '/module-view';
+  static const String topicView = '/topic-view';
   static const all = <String>{
     startupView,
     homeView,
     signInOrUpView,
     welcomeView,
     flexibleFormPage,
+    moduleView,
+    topicView,
   };
 }
 
@@ -39,6 +47,8 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.signInOrUpView, page: SignInOrUpView),
     RouteDef(Routes.welcomeView, page: WelcomeView),
     RouteDef(Routes.flexibleFormPage, page: FlexibleFormPage),
+    RouteDef(Routes.moduleView, page: ModuleView),
+    RouteDef(Routes.topicView, page: TopicView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -85,6 +95,26 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    ModuleView: (data) {
+      var args = data.getArgs<ModuleViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => ModuleView(
+          key: args.key,
+          module: args.module,
+        ),
+        settings: data,
+      );
+    },
+    TopicView: (data) {
+      var args = data.getArgs<TopicViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => TopicView(
+          key: args.key,
+          topic: args.topic,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -105,7 +135,8 @@ class FlexibleFormPageArguments {
   final String title;
   final String? subtitle;
   final Map<String, dynamic> fieldsToWidgets;
-  final Future<Map<String, String>> Function(Map<String, dynamic>) onSubmit;
+  final void Function(Map<String, dynamic>,
+      dynamic Function(Map<String, String>), dynamic Function()) onSubmit;
   final Map<String, String>? textDefaultValues;
   FlexibleFormPageArguments(
       {this.key,
@@ -114,4 +145,18 @@ class FlexibleFormPageArguments {
       required this.fieldsToWidgets,
       required this.onSubmit,
       this.textDefaultValues});
+}
+
+/// ModuleView arguments holder class
+class ModuleViewArguments {
+  final Key? key;
+  final Module module;
+  ModuleViewArguments({this.key, required this.module});
+}
+
+/// TopicView arguments holder class
+class TopicViewArguments {
+  final Key? key;
+  final Topic topic;
+  TopicViewArguments({this.key, required this.topic});
 }

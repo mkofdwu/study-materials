@@ -40,6 +40,7 @@ class YesNoBottomSheet extends StatelessWidget {
               Expanded(
                 child: MyButton(
                   text: request.mainButtonTitle ?? 'Ok',
+                  fillWidth: true,
                   onPressed: () => completer(SheetResponse(confirmed: true)),
                 ),
               ),
@@ -48,6 +49,7 @@ class YesNoBottomSheet extends StatelessWidget {
                 child: MyButton(
                   text: request.secondaryButtonTitle ?? 'Cancel',
                   isPrimary: false,
+                  fillWidth: true,
                   onPressed: () => completer(SheetResponse(confirmed: false)),
                 ),
               )

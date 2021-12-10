@@ -15,8 +15,11 @@ class FlexibleFormPage extends StatelessWidget {
   // when the value is updated
   final Map<String, dynamic> fieldsToWidgets;
   final Map<String, String>? textDefaultValues; // only for TextFields
-  final Future<Map<String, String>> Function(Map<String, dynamic>)
-      onSubmit; // field: value
+  final void Function(
+    Map<String, dynamic> inputs,
+    Function(Map<String, String>) setInputErrors,
+    Function() back,
+  ) onSubmit;
 
   const FlexibleFormPage({
     Key? key,
@@ -39,6 +42,10 @@ class FlexibleFormPage extends StatelessWidget {
   Scaffold _builder(FlexibleFormPageViewModel model) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: MyButton(
+        text: 'Submit',
+        onPressed: model.submit,
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 48),
@@ -65,24 +72,18 @@ class FlexibleFormPage extends StatelessWidget {
                 ),
               SizedBox(height: 72),
               // would a listview be better?
-              SingleChildScrollView(
-                child: Column(
-                  children: _fieldWidgetsToChildren(model)
-                      .map(
-                        (widget) => Padding(
-                          padding: const EdgeInsets.only(bottom: 28),
-                          child: widget,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-              Spacer(),
-              Align(
-                alignment: Alignment.centerRight,
-                child: MyButton(
-                  text: 'Submit',
-                  onPressed: model.submit,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: _fieldWidgetsToChildren(model)
+                        .map(
+                          (widget) => Padding(
+                            padding: const EdgeInsets.only(bottom: 28),
+                            child: widget,
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ],

@@ -10,7 +10,8 @@ class FlexibleFormPageViewModel extends BaseViewModel {
   final Map<String, dynamic> _customWidgetValues = {};
   Map<String, String> inputErrors = {};
 
-  final Future<Map<String, String>> Function(Map<String, dynamic>) _submit;
+  final void Function(Map<String, dynamic> inputs,
+      Function(Map<String, String>) setInputErrors, Function() back) _submit;
   final Map<String, String> _textDefaultValues;
 
   FlexibleFormPageViewModel(this._submit, this._textDefaultValues);
@@ -27,15 +28,13 @@ class FlexibleFormPageViewModel extends BaseViewModel {
     };
   }
 
-  Future<void> submit() async {
+  void submit() {
     final allInputs = _controllers.map<String, dynamic>(
         (field, controller) => MapEntry(field, controller.text));
     allInputs.addAll(_customWidgetValues);
-    final errors = await _submit(allInputs);
-    if (errors.isEmpty) {
-      _navigationService.back();
-    } else {
+    _submit(allInputs, (errors) {
       inputErrors = errors;
-    }
+      notifyListeners();
+    }, () => _navigationService.back());
   }
 }
