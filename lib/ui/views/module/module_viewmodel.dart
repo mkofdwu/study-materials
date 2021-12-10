@@ -4,8 +4,10 @@ import 'package:hackathon_study_materials/datamodels/found_material.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
+import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
 import 'package:hackathon_study_materials/ui/widgets/resource_site_selection.dart';
+import 'package:hackathon_study_materials/ui/widgets/review_found/review_found_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -13,6 +15,7 @@ class ModuleViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
   final _navigationService = locator<NavigationService>();
   final _googleSearchService = locator<GoogleSearchService>();
+  final _moduleApi = locator<ModuleApiService>();
 
   final Module _module;
 
@@ -24,7 +27,7 @@ class ModuleViewModel extends BaseViewModel {
       arguments: FlexibleFormPageArguments(
         title: 'Add topics',
         fieldsToWidgets: {
-          'topicNames': 'TextField:Topic names (separated by space)',
+          'topicNames': 'TextField:Topic names (separated by comma)',
           'resourceSites': (onValueChanged) => ResourceSiteSelection(
                 resourceSites: _userStore.currentUser.resourceSites,
                 onValueChanged: onValueChanged,
@@ -39,13 +42,14 @@ class ModuleViewModel extends BaseViewModel {
           }
 
           final topicToFound = <String, List<FoundMaterial>>{};
-          for (final topic in topicNames.split(',')) {
+          for (final name in topicNames.split(',')) {
             final foundMaterials = await _googleSearchService.findMaterials(
-              topic,
+              name,
+              name,
               inputs['resourceSites'],
               _userStore.currentUser.numResults,
             );
-            topicToFound[topic] = foundMaterials;
+            topicToFound[name] = foundMaterials;
           }
 
           _navigationService.navigateTo(
@@ -54,8 +58,30 @@ class ModuleViewModel extends BaseViewModel {
               title: 'Review materials',
               subtitle:
                   "We've gathered some study material you may be interested in. Choose which to add to MA4132",
-              fieldsToWidgets: {},
-              onSubmit: (inputs, setErrors, back) {},
+              fieldsToWidgets: {
+                'materials': (onValueChanged) => ReviewFoundView(
+                      topicToFound: topicToFound,
+                      onValueChanged: onValueChanged,
+                    ),
+              },
+              onSubmit: (inputs, setErrors, back) async {
+                // create topic, add materials
+                for (final topicName in inputs['materials'].keys) {
+                  final topic =
+                      await _moduleApi.addTopic(_module.id, topicName);
+                  for (final found in inputs['materials'][topic]) {
+                    if (found.selected) {
+                      final material = await _moduleApi.addFoundMaterial(
+                        _module.id,
+                        topic.id,
+                        found,
+                      );
+                      topic.materialIds.add(material.id);
+                    }
+                  }
+                  _module.topics.add(topic);
+                }
+              },
             ),
           );
         },

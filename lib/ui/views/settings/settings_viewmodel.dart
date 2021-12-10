@@ -18,6 +18,7 @@ class SettingsViewModel extends BaseViewModel {
   int get numResults => _userStore.currentUser.numResults;
 
   void addResourceSite() {
+    // TODO: validate url
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
       arguments: FlexibleFormPageArguments(
@@ -50,6 +51,7 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   void editResourceSite(ResourceSite resourceSite) {
+    // TODO: validate url
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
       arguments: FlexibleFormPageArguments(

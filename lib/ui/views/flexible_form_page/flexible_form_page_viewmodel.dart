@@ -17,6 +17,9 @@ class FlexibleFormPageViewModel extends BaseViewModel {
   FlexibleFormPageViewModel(this._submit, this._textDefaultValues);
 
   TextEditingController createController(String field) {
+    if (_controllers.containsKey(field)) {
+      return _controllers[field]!;
+    }
     final controller = TextEditingController(text: _textDefaultValues[field]);
     _controllers[field] = controller;
     return controller;

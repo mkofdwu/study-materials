@@ -48,10 +48,11 @@ class FlexibleFormPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 48),
+          padding: const EdgeInsets.symmetric(horizontal: 48),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 48),
               MyBackButton(),
               SizedBox(height: 56),
               Text(
@@ -74,6 +75,7 @@ class FlexibleFormPage extends StatelessWidget {
               // would a listview be better?
               Expanded(
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 64),
                   child: Column(
                     children: _fieldWidgetsToChildren(model)
                         .map(

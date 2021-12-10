@@ -29,15 +29,18 @@ class ModulesView extends StatelessWidget {
               SizedBox(height: 40),
             ] +
             model.modules
-                .map((module) => MyListTile(
-                      color: module.color,
-                      title: module.title,
-                      subtitle: '${module.topics.length} topics',
-                      suffixIcons: {
-                        FluentIcons.more_vertical_24_regular: () =>
-                            model.showOptionsFor(module)
-                      },
-                      onPressed: () => model.goToModule(module),
+                .map((module) => Padding(
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: MyListTile(
+                        color: module.color,
+                        title: module.title,
+                        subtitle: '${module.topics.length} topics',
+                        suffixIcons: {
+                          FluentIcons.more_vertical_24_regular: () =>
+                              model.showOptionsFor(module)
+                        },
+                        onPressed: () => model.goToModule(module),
+                      ),
                     ))
                 .toList(),
       ),
