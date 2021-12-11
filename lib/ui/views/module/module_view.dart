@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
+import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
+import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
+import 'package:hackathon_study_materials/utils/get_material_icon.dart';
+import 'package:hackathon_study_materials/utils/show_material_options.dart';
+import 'package:hackathon_study_materials/utils/show_module_options.dart';
 import 'package:stacked/stacked.dart';
 
 import 'module_viewmodel.dart';
@@ -66,15 +72,25 @@ class ModuleView extends StatelessWidget {
                   SizedBox(height: 24),
                   Row(
                     children: [
-                      Icon(FluentIcons.link_20_regular, size: 20),
+                      PressedFeedback(
+                        child: Icon(FluentIcons.search_20_regular, size: 20),
+                        onPressed: () => model.goToSearch,
+                      ),
                       SizedBox(width: 16),
-                      Icon(FluentIcons.note_20_regular, size: 20),
-                      Spacer(),
-                      Icon(FluentIcons.search_20_regular, size: 20),
+                      PressedFeedback(
+                        child: Icon(FluentIcons.filter_20_regular, size: 20),
+                        onPressed: () => model.goToFilter,
+                      ),
                       SizedBox(width: 16),
-                      Icon(FluentIcons.filter_20_regular, size: 20),
-                      SizedBox(width: 16),
-                      Icon(FluentIcons.more_vertical_20_regular, size: 20),
+                      PressedFeedback(
+                        child: Icon(FluentIcons.more_vertical_20_regular,
+                            size: 20),
+                        onPressed: () => showModuleOptions(
+                          module,
+                          model.notifyListeners,
+                          backOnDelete: true,
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 40),
@@ -86,9 +102,25 @@ class ModuleView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 28),
-                  // ListView(
-                  //   children: [],
-                  // ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: module.topics
+                        .asMap()
+                        .map((i, topic) => MapEntry(
+                            i,
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: PressedFeedback(
+                                onPressed: () => model.goToTopic(topic),
+                                child: Text(
+                                  '${i + 1}. ' + topic.title,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            )))
+                        .values
+                        .toList(),
+                  ),
                   SizedBox(height: 40),
                   Text(
                     'All materials',
@@ -98,7 +130,47 @@ class ModuleView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 28),
-                  // ListView(),
+                  FutureBuilder<List<StudyMaterial>>(
+                    future: model.getMaterials(),
+                    builder: (context, snapshot) {
+                      // very similar to in topic view
+                      if (!snapshot.hasData) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Palette.darkGrey,
+                            ),
+                          ),
+                        );
+                      }
+                      return Column(
+                        children: snapshot.data!
+                            .map(
+                              (material) => Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: MyListTile(
+                                  title: material.title,
+                                  subtitle: material.type,
+                                  iconData: getMaterialIcon(material.type),
+                                  suffixIcons: {
+                                    if (material.pinned)
+                                      FluentIcons.pin_20_filled: () {},
+                                    // FluentIcons.more_vertical_20_regular: () =>
+                                    //     showMaterialOptions(
+                                    //       topic,
+                                    //       material,
+                                    //       model.notifyListeners,
+                                    //     ),
+                                  },
+                                  onPressed: () {},
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

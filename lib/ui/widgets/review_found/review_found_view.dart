@@ -19,8 +19,26 @@ class ReviewFoundView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ReviewFoundViewModel>.reactive(
-      builder: (context, model, child) =>
-          _buildFoundMaterialsList(model, topicToFound.values.first),
+      builder: (context, model, child) => SingleChildScrollView(
+        child: topicToFound.length == 1
+            ? _buildFoundMaterialsList(model, topicToFound.values.first, null)
+            // dont show topic title if is only one
+            : Column(
+                children: topicToFound
+                    .map(
+                      (topicName, foundMaterials) => MapEntry(
+                        topicName,
+                        _buildFoundMaterialsList(
+                          model,
+                          foundMaterials,
+                          topicName,
+                        ),
+                      ),
+                    )
+                    .values
+                    .toList(),
+              ),
+      ),
       viewModelBuilder: () =>
           ReviewFoundViewModel(topicToFound, onValueChanged),
     );
@@ -29,29 +47,43 @@ class ReviewFoundView extends StatelessWidget {
   Widget _buildFoundMaterialsList(
     ReviewFoundViewModel model,
     List<FoundMaterial> foundMaterials,
+    String? topicName,
   ) =>
-      SingleChildScrollView(
-        child: Column(
-          children: foundMaterials
-              .map((found) => Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: GestureDetector(
-                      onTap: () => model.toggleSelected(found),
-                      child: MyListTile(
-                        title: found.title,
-                        subtitle: found.siteName,
-                        iconData: FluentIcons.link_20_regular,
-                        suffixIcons: found.selected
-                            ? {
-                                FluentIcons.checkmark_20_regular: () =>
-                                    model.toggleSelected(found)
-                              }
-                            : {},
-                        onPressed: () => model.toggleSelected(found),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: (topicName != null
+                ? <Widget>[
+                    Text(
+                      topicName,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.4),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ))
-              .toList(),
-        ),
+                    SizedBox(height: 24),
+                  ]
+                : <Widget>[]) +
+            foundMaterials
+                .map((found) => Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: GestureDetector(
+                        onTap: () => model.toggleSelected(found),
+                        child: MyListTile(
+                          title: found.title,
+                          subtitle: found.siteName,
+                          iconData: FluentIcons.link_20_regular,
+                          suffixIcons: found.selected
+                              ? {
+                                  FluentIcons.checkmark_20_regular: () =>
+                                      model.toggleSelected(found)
+                                }
+                              : {},
+                          onPressed: () => model.toggleSelected(found),
+                        ),
+                      ),
+                    ))
+                .toList() +
+            [SizedBox(height: 32)],
       );
 }

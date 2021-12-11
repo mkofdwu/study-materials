@@ -42,6 +42,8 @@ dependencies:
 
   cached_network_image: ^3.0.0
   http: ^0.13.4
+  url_launcher: ^6.0.17
+  aad_oauth: ^0.3.0
 
 dependency_overrides:
   flutter_statusbarcolor_ns: ^0.4.0

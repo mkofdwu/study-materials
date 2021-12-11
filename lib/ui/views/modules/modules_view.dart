@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/utils/show_module_options.dart';
 import 'package:stacked/stacked.dart';
 
 import 'modules_viewmodel.dart';
@@ -37,7 +38,7 @@ class ModulesView extends StatelessWidget {
                         subtitle: '${module.topics.length} topics',
                         suffixIcons: {
                           FluentIcons.more_vertical_24_regular: () =>
-                              model.showOptionsFor(module)
+                              showModuleOptions(module, model.notifyListeners)
                         },
                         onPressed: () => model.goToModule(module),
                       ),

@@ -18,7 +18,6 @@ class FlexibleFormPage extends StatelessWidget {
   final void Function(
     Map<String, dynamic> inputs,
     Function(Map<String, String>) setInputErrors,
-    Function() back,
   ) onSubmit;
 
   const FlexibleFormPage({
@@ -77,6 +76,7 @@ class FlexibleFormPage extends StatelessWidget {
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.only(bottom: 64),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: _fieldWidgetsToChildren(model)
                         .map(
                           (widget) => Padding(

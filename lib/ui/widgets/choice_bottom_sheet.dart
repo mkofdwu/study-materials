@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/ui/widgets/button.dart';
+import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ChoiceBottomSheet extends StatelessWidget {
@@ -38,22 +38,22 @@ class ChoiceBottomSheet extends StatelessWidget {
               SizedBox(height: 24),
             ] +
             (request.data as List<String>)
-                .map((choice) => GestureDetector(
+                .map((choice) => PressedFeedback(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(choice, style: TextStyle(fontSize: 16)),
                       ),
-                      onTap: () => completer(
+                      onPressed: () => completer(
                           SheetResponse(confirmed: true, data: choice)),
                     ))
                 .toList() +
             [
-              GestureDetector(
+              PressedFeedback(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Text('Cancel', style: TextStyle(fontSize: 16)),
                 ),
-                onTap: () => completer(SheetResponse(confirmed: false)),
+                onPressed: () => completer(SheetResponse(confirmed: false)),
               )
             ],
       ),

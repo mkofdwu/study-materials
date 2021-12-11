@@ -14,6 +14,7 @@ import '../datamodels/topic.dart';
 import '../ui/views/flexible_form_page/flexible_form_page.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/module/module_view.dart';
+import '../ui/views/note/note_view.dart';
 import '../ui/views/sign_in_or_up/sign_in_or_up_view.dart';
 import '../ui/views/startup/startup_view.dart';
 import '../ui/views/topic/topic_view.dart';
@@ -27,6 +28,7 @@ class Routes {
   static const String flexibleFormPage = '/flexible-form-page';
   static const String moduleView = '/module-view';
   static const String topicView = '/topic-view';
+  static const String noteView = '/note-view';
   static const all = <String>{
     startupView,
     homeView,
@@ -35,6 +37,7 @@ class Routes {
     flexibleFormPage,
     moduleView,
     topicView,
+    noteView,
   };
 }
 
@@ -49,6 +52,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.flexibleFormPage, page: FlexibleFormPage),
     RouteDef(Routes.moduleView, page: ModuleView),
     RouteDef(Routes.topicView, page: TopicView),
+    RouteDef(Routes.noteView, page: NoteView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -111,6 +115,19 @@ class StackedRouter extends RouterBase {
         builder: (context) => TopicView(
           key: args.key,
           topic: args.topic,
+          parentModule: args.parentModule,
+        ),
+        settings: data,
+      );
+    },
+    NoteView: (data) {
+      var args = data.getArgs<NoteViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => NoteView(
+          key: args.key,
+          title: args.title,
+          content: args.content,
+          saveNote: args.saveNote,
         ),
         settings: data,
       );
@@ -135,8 +152,8 @@ class FlexibleFormPageArguments {
   final String title;
   final String? subtitle;
   final Map<String, dynamic> fieldsToWidgets;
-  final void Function(Map<String, dynamic>,
-      dynamic Function(Map<String, String>), dynamic Function()) onSubmit;
+  final void Function(
+      Map<String, dynamic>, dynamic Function(Map<String, String>)) onSubmit;
   final Map<String, String>? textDefaultValues;
   FlexibleFormPageArguments(
       {this.key,
@@ -158,5 +175,20 @@ class ModuleViewArguments {
 class TopicViewArguments {
   final Key? key;
   final Topic topic;
-  TopicViewArguments({this.key, required this.topic});
+  final Module parentModule;
+  TopicViewArguments(
+      {this.key, required this.topic, required this.parentModule});
+}
+
+/// NoteView arguments holder class
+class NoteViewArguments {
+  final Key? key;
+  final String title;
+  final String content;
+  final Future<dynamic> Function(String, String) saveNote;
+  NoteViewArguments(
+      {this.key,
+      required this.title,
+      required this.content,
+      required this.saveNote});
 }

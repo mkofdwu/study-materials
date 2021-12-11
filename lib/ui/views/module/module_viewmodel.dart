@@ -2,6 +2,7 @@ import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/found_material.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
+import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
@@ -33,7 +34,7 @@ class ModuleViewModel extends BaseViewModel {
                 onValueChanged: onValueChanged,
               ),
         },
-        onSubmit: (inputs, setErrors, back) async {
+        onSubmit: (inputs, setErrors) async {
           final topicNames = inputs['topicNames'] as String;
           if (topicNames.isEmpty) {
             // TODO: only allow alphanumeric characters
@@ -42,7 +43,8 @@ class ModuleViewModel extends BaseViewModel {
           }
 
           final topicToFound = <String, List<FoundMaterial>>{};
-          for (final name in topicNames.split(',')) {
+          for (String name in topicNames.split(',')) {
+            name = name.trim();
             final foundMaterials = await _googleSearchService.findMaterials(
               name,
               name,
@@ -64,12 +66,12 @@ class ModuleViewModel extends BaseViewModel {
                       onValueChanged: onValueChanged,
                     ),
               },
-              onSubmit: (inputs, setErrors, back) async {
+              onSubmit: (inputs, setErrors) async {
                 // create topic, add materials
                 for (final topicName in inputs['materials'].keys) {
                   final topic =
                       await _moduleApi.addTopic(_module.id, topicName);
-                  for (final found in inputs['materials'][topic]) {
+                  for (final found in inputs['materials'][topicName]) {
                     if (found.selected) {
                       final material = await _moduleApi.addFoundMaterial(
                         _module.id,
@@ -81,6 +83,9 @@ class ModuleViewModel extends BaseViewModel {
                   }
                   _module.topics.add(topic);
                 }
+                notifyListeners();
+                _navigationService.back();
+                _navigationService.back();
               },
             ),
           );
@@ -92,7 +97,14 @@ class ModuleViewModel extends BaseViewModel {
   void goToTopic(Topic topic) {
     _navigationService.navigateTo(
       Routes.topicView,
-      arguments: TopicViewArguments(topic: topic),
+      arguments: TopicViewArguments(topic: topic, parentModule: _module),
     );
   }
+
+  void goToSearch() {}
+
+  void goToFilter() {}
+
+  Future<List<StudyMaterial>> getMaterials() =>
+      _moduleApi.getModuleMaterials(_module.id);
 }

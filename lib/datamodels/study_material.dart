@@ -1,29 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Material {
+class StudyMaterial {
   String id;
   String moduleId;
-  String topicId;
+  String? topicId;
   String type; // one of: '#postFromTeacher', '#note' or <name of resource site>
   String title;
   String url;
-  String content; // only for notes
+  String? content; // only for notes
   bool pinned;
+  DateTime dateCreated;
 
-  Material({
+  StudyMaterial({
     required this.id,
     required this.moduleId,
-    required this.topicId,
+    this.topicId,
     required this.type,
     required this.title,
     required this.url,
-    required this.content,
+    this.content,
     this.pinned = false,
+    required this.dateCreated,
   });
 
-  factory Material.fromDoc(DocumentSnapshot doc) {
+  factory StudyMaterial.fromDoc(DocumentSnapshot doc) {
     final data = doc.data()!;
-    return Material(
+    return StudyMaterial(
       id: doc.id,
       moduleId: data['moduleId'],
       topicId: data['topicId'],
@@ -32,6 +34,7 @@ class Material {
       url: data['url'],
       content: data['content'],
       pinned: data['pinned'],
+      dateCreated: data['dateCreated'].toDate(),
     );
   }
 
@@ -44,11 +47,12 @@ class Material {
       'url': url,
       'content': content,
       'pinned': pinned,
+      'dateCreated': Timestamp.fromDate(dateCreated),
     };
   }
 
   @override
-  bool operator ==(Object other) => other is Material && id == other.id;
+  bool operator ==(Object other) => other is StudyMaterial && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

@@ -74,12 +74,12 @@ class MyListTile extends StatelessWidget {
             ),
           ] +
           suffixIcons
-              .map((iconData, onTap) => MapEntry(
+              .map((iconData, onTapIcon) => MapEntry(
                     iconData,
                     Padding(
                       padding: const EdgeInsets.only(left: 16),
                       child: GestureDetector(
-                        onTap: () => onTap,
+                        onTap: onTapIcon,
                         child: Icon(iconData, size: 20),
                       ),
                     ),

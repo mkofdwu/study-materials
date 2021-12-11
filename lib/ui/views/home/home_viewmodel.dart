@@ -1,5 +1,6 @@
 import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
+import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/user.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/services/api/user_api_service.dart';
@@ -30,7 +31,7 @@ class HomeViewModel extends BaseViewModel {
         fieldsToWidgets: {
           'moduleName': 'TextField:Module name',
         },
-        onSubmit: (inputs, setErrors, back) async {
+        onSubmit: (inputs, setErrors) async {
           if (inputs['moduleName'].isEmpty) {
             setErrors({'moduleName': 'Please enter a name'});
             return;
@@ -42,9 +43,12 @@ class HomeViewModel extends BaseViewModel {
           _userStore.currentUser.modules!.add(module);
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
-          back();
+          _navigationService.back();
         },
       ),
     );
   }
+
+  Future<List<StudyMaterial>> getRecentMaterials() =>
+      _moduleApi.getRecentMaterials(8);
 }

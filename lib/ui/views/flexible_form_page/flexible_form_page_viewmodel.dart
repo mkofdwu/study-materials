@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class FlexibleFormPageViewModel extends BaseViewModel {
-  final _navigationService = locator<NavigationService>();
-
   final Map<String, TextEditingController> _controllers = {};
   final Map<String, dynamic> _customWidgetValues = {};
   Map<String, String> inputErrors = {};
 
-  final void Function(Map<String, dynamic> inputs,
-      Function(Map<String, String>) setInputErrors, Function() back) _submit;
+  final void Function(
+    Map<String, dynamic> inputs,
+    Function(Map<String, String>) setInputErrors,
+  ) _submit;
   final Map<String, String> _textDefaultValues;
 
   FlexibleFormPageViewModel(this._submit, this._textDefaultValues);
@@ -38,6 +36,6 @@ class FlexibleFormPageViewModel extends BaseViewModel {
     _submit(allInputs, (errors) {
       inputErrors = errors;
       notifyListeners();
-    }, () => _navigationService.back());
+    });
   }
 }

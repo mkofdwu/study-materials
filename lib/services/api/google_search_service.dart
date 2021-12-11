@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class GoogleSearchService {
   Future<List<FoundMaterial>> findMaterials(String topicName, String query,
       List<ResourceSite> resourceSites, int numResults) async {
-    final formattedQuery = query.replaceAll(' ', '+'); // TODO:
+    final formattedQuery = query.trim().replaceAll(' ', '+'); // TODO:
     final foundMaterials = <FoundMaterial>[];
     for (final resourceSite in resourceSites) {
       final response = await http.get(Uri.parse(

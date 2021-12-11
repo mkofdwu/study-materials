@@ -32,6 +32,7 @@ class _MyButtonState extends State<MyButton> {
         setState(() => _pressed = false);
         Future.delayed(const Duration(milliseconds: 200), widget.onPressed);
       },
+      onTapCancel: () => setState(() => _pressed = false),
       child: Transform.scale(
         scale: _pressed ? 0.96 : 1,
         child: Opacity(opacity: _pressed ? 0.9 : 1, child: _mainUi()),

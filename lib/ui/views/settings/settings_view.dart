@@ -10,43 +10,52 @@ class SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
-      builder: (context, model, child) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 48),
-            Text(
-              'Settings',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 48),
-            _buildResourceSitesView(model),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Number of top results',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                DropdownButton<int>(
-                  value: model.numResults,
-                  items: List<int>.generate(20, (i) => i + 1)
-                      .map((value) => DropdownMenuItem(
-                            value: value,
-                            child: Text(value.toString()),
-                          ))
-                      .toList(),
-                  onChanged: model.onChangeNumResults,
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            _buildActionSetting('Profile', model.goToProfile),
-            SizedBox(height: 20),
-            _buildActionSetting('Sign out', model.signOut),
-          ],
+      builder: (context, model, child) => SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 48),
+              Text(
+                'Settings',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(height: 48),
+              _buildResourceSitesView(model),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Number of top results',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  DropdownButton<int>(
+                    value: model.numResults,
+                    items: List<int>.generate(20, (i) => i + 1)
+                        .map((value) => DropdownMenuItem(
+                              value: value,
+                              child: Text(value.toString()),
+                            ))
+                        .toList(),
+                    onChanged: model.onChangeNumResults,
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              _buildActionSetting(
+                model.connectedToTeams
+                    ? 'Disconnect from MS Teams'
+                    : 'Connect to MS Teams',
+                model.toggleConnectToTeams,
+              ),
+              SizedBox(height: 20),
+              _buildActionSetting('Profile', model.goToProfile),
+              SizedBox(height: 20),
+              _buildActionSetting('Sign out', model.signOut),
+            ],
+          ),
         ),
       ),
       viewModelBuilder: () => SettingsViewModel(),

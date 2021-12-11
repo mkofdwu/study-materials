@@ -1,6 +1,8 @@
 import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/resource_site.dart';
+import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
+import 'package:hackathon_study_materials/services/api/microsoft_teams_service.dart';
 import 'package:hackathon_study_materials/services/api/user_api_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
@@ -13,6 +15,8 @@ class SettingsViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _snackbarService = locator<SnackbarService>();
   final _userApi = locator<UserApiService>();
+  final _microsoftTeamsService = locator<MicrosoftTeamsService>();
+  final _bottomSheetService = locator<BottomSheetService>();
 
   List<ResourceSite> get resourceSites => _userStore.currentUser.resourceSites;
   int get numResults => _userStore.currentUser.numResults;
@@ -28,7 +32,7 @@ class SettingsViewModel extends BaseViewModel {
           'siteUrl': 'TextField:Site url',
           'queryUrl': 'TextField:Query url',
         },
-        onSubmit: (inputs, setErrors, back) async {
+        onSubmit: (inputs, setErrors) async {
           final errors = {
             if (inputs['title'].isEmpty) 'title': 'Please enter a title',
             if (inputs['siteUrl'].isEmpty)
@@ -44,7 +48,7 @@ class SettingsViewModel extends BaseViewModel {
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
-          back();
+          _navigationService.back();
         },
       ),
     );
@@ -66,7 +70,7 @@ class SettingsViewModel extends BaseViewModel {
           'siteUrl': resourceSite.siteUrl,
           'queryUrl': resourceSite.queryUrl ?? ''
         },
-        onSubmit: (inputs, setErrors, back) async {
+        onSubmit: (inputs, setErrors) async {
           final errors = {
             if (inputs['title'].isEmpty) 'title': 'Please enter a title',
             if (inputs['siteUrl'].isEmpty)
@@ -84,17 +88,24 @@ class SettingsViewModel extends BaseViewModel {
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners(); // update display in this page
-          back();
+          _navigationService.back();
         },
       ),
     );
   }
 
   Future<void> removeResourceSite(ResourceSite resourceSite) async {
-    // TODO: ask confirm
-    _userStore.currentUser.resourceSites.remove(resourceSite);
-    await _userApi.setUserData(_userStore.currentUser);
-    notifyListeners();
+    final response = await _bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.yesno,
+      title: 'Remove resource site?',
+      description:
+          "You'll no longer search for study materials on '${resourceSite.title}' (${resourceSite.siteUrl}).",
+    );
+    if (response != null && response.confirmed) {
+      _userStore.currentUser.resourceSites.remove(resourceSite);
+      await _userApi.setUserData(_userStore.currentUser);
+      notifyListeners();
+    }
   }
 
   Future<void> onChangeNumResults(int? newNumResults) async {
@@ -106,14 +117,32 @@ class SettingsViewModel extends BaseViewModel {
     }
   }
 
+  bool get connectedToTeams => _microsoftTeamsService.isConnected;
+
+  void toggleConnectToTeams() {
+    if (connectedToTeams) {
+      _microsoftTeamsService.disconnect();
+    } else {
+      _microsoftTeamsService.connect();
+    }
+    notifyListeners();
+  }
+
   void goToProfile() {}
 
-  void signOut() {
-    _authService.signOut();
-    _navigationService.clearStackAndShow(Routes.welcomeView);
-    _snackbarService.showSnackbar(
-      title: 'Success',
-      message: 'Signed out successfully',
+  Future<void> signOut() async {
+    final response = await _bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.yesno,
+      title: 'Sign out?',
+      description: 'Are you sure you want to sign out of your account?',
     );
+    if (response != null && response.confirmed) {
+      _authService.signOut();
+      _navigationService.clearStackAndShow(Routes.welcomeView);
+      _snackbarService.showSnackbar(
+        title: 'Success',
+        message: 'Signed out successfully',
+      );
+    }
   }
 }
