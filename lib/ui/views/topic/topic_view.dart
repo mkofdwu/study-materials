@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
-import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
-import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
 import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
-import 'package:hackathon_study_materials/utils/get_material_icon.dart';
-import 'package:hackathon_study_materials/utils/open_material.dart';
 import 'package:hackathon_study_materials/utils/show_material_options.dart';
 import 'package:stacked/stacked.dart';
 
@@ -97,48 +94,14 @@ class TopicView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 28),
-                        FutureBuilder<List<StudyMaterial>>(
+                        MaterialListView(
                           future: model.getMaterials(model.filterByType),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: Palette.darkGrey,
-                                  ),
-                                ),
-                              );
-                            }
-                            return Column(
-                              children: snapshot.data!
-                                  .map(
-                                    (material) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 20),
-                                      child: MyListTile(
-                                        title: material.title,
-                                        subtitle: material.type,
-                                        iconData:
-                                            getMaterialIcon(material.type),
-                                        suffixIcons: {
-                                          if (material.pinned)
-                                            FluentIcons.pin_20_filled: () {},
-                                          FluentIcons.more_vertical_20_regular:
-                                              () => showMaterialOptions(
-                                                    parentModule.topics,
-                                                    topic,
-                                                    material,
-                                                    model.notifyListeners,
-                                                  ),
-                                        },
-                                        onPressed: () => openMaterial(material),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            );
-                          },
+                          getSubtitle: (material) => material.type,
+                          onShowOptions: (material) => showMaterialOptions(
+                            parentModule.topics,
+                            material,
+                            model.notifyListeners,
+                          ),
                         ),
                       ],
                     ),

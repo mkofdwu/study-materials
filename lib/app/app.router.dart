@@ -15,6 +15,7 @@ import '../ui/views/flexible_form_page/flexible_form_page.dart';
 import '../ui/views/home/home_view.dart';
 import '../ui/views/module/module_view.dart';
 import '../ui/views/note/note_view.dart';
+import '../ui/views/search/search_view.dart';
 import '../ui/views/sign_in_or_up/sign_in_or_up_view.dart';
 import '../ui/views/startup/startup_view.dart';
 import '../ui/views/topic/topic_view.dart';
@@ -29,6 +30,7 @@ class Routes {
   static const String moduleView = '/module-view';
   static const String topicView = '/topic-view';
   static const String noteView = '/note-view';
+  static const String searchView = '/search-view';
   static const all = <String>{
     startupView,
     homeView,
@@ -38,6 +40,7 @@ class Routes {
     moduleView,
     topicView,
     noteView,
+    searchView,
   };
 }
 
@@ -53,6 +56,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.moduleView, page: ModuleView),
     RouteDef(Routes.topicView, page: TopicView),
     RouteDef(Routes.noteView, page: NoteView),
+    RouteDef(Routes.searchView, page: SearchView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -132,6 +136,19 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    SearchView: (data) {
+      var args = data.getArgs<SearchViewArguments>(
+        orElse: () => SearchViewArguments(),
+      );
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => SearchView(
+          key: args.key,
+          module: args.module,
+          topic: args.topic,
+        ),
+        settings: data,
+      );
+    },
   };
 }
 
@@ -191,4 +208,12 @@ class NoteViewArguments {
       required this.title,
       required this.content,
       required this.saveNote});
+}
+
+/// SearchView arguments holder class
+class SearchViewArguments {
+  final Key? key;
+  final Module? module;
+  final Topic? topic;
+  SearchViewArguments({this.key, this.module, this.topic});
 }

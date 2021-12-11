@@ -7,7 +7,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 class ModulesViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
-  final _bottomSheetService = locator<BottomSheetService>();
   final _navigationService = locator<NavigationService>();
 
   List<Module> get modules => _userStore.currentUser.modules!;

@@ -28,9 +28,6 @@ class ModuleApiService {
       'title': moduleName,
       'color': randomColor().value,
     });
-    await _usersRef.doc(ownerId).update({
-      'modules': FieldValue.arrayUnion([moduleDoc.id])
-    });
     return Module.fromDoc(await moduleDoc.get(), []);
   }
 
@@ -112,13 +109,69 @@ class ModuleApiService {
     return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 
+  Future<List<StudyMaterial>> searchForMaterials(
+    String ownerId,
+    String searchQuery, {
+    String? moduleId,
+    String? topicId,
+  }) async {
+    // may need to be modified for collaborative modules
+    Query query;
+    if (topicId != null) {
+      query = _materialsRef.where('topicId', isEqualTo: topicId);
+    } else if (moduleId != null) {
+      query = _materialsRef.where('moduleId', isEqualTo: moduleId);
+    } else {
+      query = _materialsRef.where('ownerId', isEqualTo: ownerId);
+    }
+    // TODO: this could be optimized
+    final snapshot = await query.get();
+    return snapshot.docs
+        .where((doc) => (doc.data()['title'] as String)
+            .toLowerCase()
+            .contains(searchQuery.toLowerCase()))
+        .map((doc) => StudyMaterial.fromDoc(doc))
+        .toList();
+  }
+
   Future<List<StudyMaterial>> getTopicMaterials(
-      String topicId, String? filterByType) async {
+    String topicId,
+    String? filterByType,
+  ) async {
     // TODO: filter by type
     final snapshot = await _materialsRef
         .where('topicId', isEqualTo: topicId)
         .orderBy('pinned', descending: true)
         .get();
+    return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
+  }
+
+  Future<List<StudyMaterial>> getMaterials(
+    String moduleId, {
+    String? topicId,
+    String? filterByType,
+    String? sortBy,
+    bool descending = false,
+  }) async {
+    Query query;
+
+    if (topicId != null) {
+      query = _materialsRef.where('topicId', isEqualTo: topicId);
+    } else {
+      query = _materialsRef.where('moduleId', isEqualTo: moduleId);
+    }
+
+    if (filterByType != null) {
+      query = query.where('type', isEqualTo: filterByType);
+    }
+
+    if (sortBy != null) {
+      query = query
+          .orderBy('pinned', descending: true)
+          .orderBy(sortBy, descending: descending);
+    }
+
+    final snapshot = await query.get();
     return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 

@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
-import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
-import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
 import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
-import 'package:hackathon_study_materials/utils/get_material_icon.dart';
-import 'package:hackathon_study_materials/utils/open_material.dart';
 import 'package:hackathon_study_materials/utils/show_material_options.dart';
 import 'package:hackathon_study_materials/utils/show_module_options.dart';
 import 'package:stacked/stacked.dart';
@@ -75,12 +72,12 @@ class ModuleView extends StatelessWidget {
                     children: [
                       PressedFeedback(
                         child: Icon(FluentIcons.search_20_regular, size: 20),
-                        onPressed: () => model.goToSearch,
+                        onPressed: model.goToSearch,
                       ),
                       SizedBox(width: 16),
                       PressedFeedback(
                         child: Icon(FluentIcons.filter_20_regular, size: 20),
-                        onPressed: () => model.goToFilter,
+                        onPressed: model.goToFilter,
                       ),
                       SizedBox(width: 16),
                       PressedFeedback(
@@ -103,6 +100,11 @@ class ModuleView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 28),
+                  if (module.topics.isEmpty)
+                    Text(
+                      'Click the add button at the bottom to create a new topic!',
+                      style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                    ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: module.topics
@@ -131,47 +133,14 @@ class ModuleView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 28),
-                  FutureBuilder<List<StudyMaterial>>(
+                  MaterialListView(
                     future: model.getMaterials(),
-                    builder: (context, snapshot) {
-                      // very similar to in topic view
-                      if (!snapshot.hasData) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Palette.darkGrey,
-                            ),
-                          ),
-                        );
-                      }
-                      return Column(
-                        children: snapshot.data!
-                            .map(
-                              (material) => Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: MyListTile(
-                                  title: material.title,
-                                  subtitle: material.type,
-                                  iconData: getMaterialIcon(material.type),
-                                  suffixIcons: {
-                                    if (material.pinned)
-                                      FluentIcons.pin_20_filled: () {},
-                                    // FluentIcons.more_vertical_20_regular: () =>
-                                    //     showMaterialOptions(
-                                    //       module.topics,
-                                    //       topic,
-                                    //       material,
-                                    //       model.notifyListeners,
-                                    //     ),
-                                  },
-                                  onPressed: () => openMaterial(material),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      );
-                    },
+                    getSubtitle: (material) => material.type,
+                    onShowOptions: (material) => showMaterialOptions(
+                      module.topics,
+                      material,
+                      model.notifyListeners,
+                    ),
                   ),
                 ],
               ),

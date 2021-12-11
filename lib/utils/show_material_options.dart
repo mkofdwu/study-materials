@@ -10,7 +10,6 @@ import 'package:stacked_services/stacked_services.dart';
 
 Future<void> showMaterialOptions(
   List<Topic> moduleTopics, // possible topics to switch between
-  Topic parentTopic,
   StudyMaterial material,
   Function notifyListeners,
 ) async {
@@ -36,10 +35,10 @@ Future<void> showMaterialOptions(
         notifyListeners();
         break;
       case 'Edit details':
-        final _navigationService = locator<NavigationService>();
         if (material.type == 'Note') {
           openMaterial(material);
         } else {
+          final _navigationService = locator<NavigationService>();
           _navigationService.navigateTo(
             Routes.flexibleFormPage,
             arguments: FlexibleFormPageArguments(
@@ -47,16 +46,10 @@ Future<void> showMaterialOptions(
               subtitle: material.title,
               fieldsToWidgets: {
                 'title': 'TextField:Title',
-                'topicId': (onValueChanged) => DropdownButton<String>(
-                      value: material.topicId,
-                      items: moduleTopics
-                          .map((topic) => DropdownMenuItem(
-                                value: topic.id,
-                                child: Text(topic.title),
-                              ))
-                          .toList(),
-                      onChanged: onValueChanged,
-                    ),
+                'topicId': (onValueChanged) => TopicSelector(
+                    moduleTopics: moduleTopics,
+                    defaultTopicId: material.topicId,
+                    onValueChanged: onValueChanged),
                 'type': 'TextField:Material type',
                 'url': 'TextField:Url',
               },
@@ -112,6 +105,8 @@ Future<void> showMaterialOptions(
               "The material '${material.title}' will be from your library. This action is irriversible!",
         );
         if (response != null && response.confirmed) {
+          final parentTopic =
+              moduleTopics.firstWhere((topic) => topic.id == material.topicId);
           parentTopic.materialIds.remove(material.id);
           await _moduleApi.deleteMaterial(material);
           notifyListeners();
@@ -121,6 +116,61 @@ Future<void> showMaterialOptions(
   }
 }
 
-Future<void> _confirmDeleteMaterial() async {
-  final _bottomSheetService = locator<BottomSheetService>();
+class TopicSelector extends StatefulWidget {
+  final List<Topic> moduleTopics;
+  final String? defaultTopicId;
+  final Function onValueChanged;
+
+  const TopicSelector(
+      {Key? key,
+      required this.moduleTopics,
+      required this.defaultTopicId,
+      required this.onValueChanged})
+      : super(key: key);
+
+  @override
+  State<TopicSelector> createState() => _TopicSelectorState();
+}
+
+class _TopicSelectorState extends State<TopicSelector> {
+  String? _selectedId;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedId = widget.defaultTopicId;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Topic',
+          style: TextStyle(
+            color: Colors.black.withOpacity(0.4),
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 8),
+        DropdownButton<String>(
+          value: _selectedId,
+          items: widget.moduleTopics
+              .map((topic) => DropdownMenuItem(
+                    value: topic.id,
+                    child: Text(topic.title),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            setState(() {
+              _selectedId = value;
+            });
+            widget.onValueChanged(value);
+          },
+        ),
+      ],
+    );
+  }
 }

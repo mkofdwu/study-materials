@@ -8,6 +8,7 @@ import 'package:hackathon_study_materials/ui/views/flexible_form_page/flexible_f
 import 'package:hackathon_study_materials/ui/views/home/home_view.dart';
 import 'package:hackathon_study_materials/ui/views/module/module_view.dart';
 import 'package:hackathon_study_materials/ui/views/note/note_view.dart';
+import 'package:hackathon_study_materials/ui/views/search/search_view.dart';
 import 'package:hackathon_study_materials/ui/views/sign_in_or_up/sign_in_or_up_view.dart';
 import 'package:hackathon_study_materials/ui/views/startup/startup_view.dart';
 import 'package:hackathon_study_materials/ui/views/topic/topic_view.dart';
@@ -24,7 +25,8 @@ import 'package:stacked_services/stacked_services.dart';
     MaterialRoute(page: FlexibleFormPage),
     MaterialRoute(page: ModuleView),
     MaterialRoute(page: TopicView),
-    MaterialRoute(page: NoteView)
+    MaterialRoute(page: NoteView),
+    MaterialRoute(page: SearchView),
   ],
   dependencies: [
     // stores

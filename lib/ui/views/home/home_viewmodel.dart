@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
@@ -15,6 +16,7 @@ class HomeViewModel extends BaseViewModel {
   final _moduleApi = locator<ModuleApiService>();
 
   int currentTab = 0;
+  final searchController = TextEditingController();
 
   User get currentUser => _userStore.currentUser;
 
@@ -40,6 +42,7 @@ class HomeViewModel extends BaseViewModel {
             _userStore.currentUser.id,
             inputs['moduleName'],
           );
+          _userStore.currentUser.moduleIds.add(module.id);
           _userStore.currentUser.modules!.add(module);
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
@@ -51,4 +54,7 @@ class HomeViewModel extends BaseViewModel {
 
   Future<List<StudyMaterial>> getRecentMaterials() =>
       _moduleApi.getRecentMaterials(_userStore.currentUser.id, 8);
+
+  Future<List<StudyMaterial>> getSearchResults(String searchQuery) =>
+      _moduleApi.searchForMaterials(_userStore.currentUser.id, searchQuery);
 }

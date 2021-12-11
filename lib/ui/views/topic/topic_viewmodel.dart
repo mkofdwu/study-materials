@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
@@ -147,7 +146,12 @@ class TopicViewModel extends BaseViewModel {
     );
   }
 
-  void goToSearch() {}
+  void goToSearch() {
+    _navigationService.navigateTo(
+      Routes.searchView,
+      arguments: SearchViewArguments(module: _parentModule, topic: _topic),
+    );
+  }
 
   void goToFilter() async {
     final response = await _bottomSheetService.showCustomSheet(

@@ -103,7 +103,12 @@ class ModuleViewModel extends BaseViewModel {
     );
   }
 
-  void goToSearch() {}
+  void goToSearch() {
+    _navigationService.navigateTo(
+      Routes.searchView,
+      arguments: SearchViewArguments(module: _module),
+    );
+  }
 
   void goToFilter() {
     _bottomSheetService.showCustomSheet(

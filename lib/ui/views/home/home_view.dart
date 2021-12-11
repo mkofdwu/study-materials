@@ -4,6 +4,7 @@ import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/ui/views/modules/modules_view.dart';
 import 'package:hackathon_study_materials/ui/views/settings/settings_view.dart';
 import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
 import 'package:hackathon_study_materials/utils/format_date_time.dart';
 import 'package:hackathon_study_materials/utils/get_material_icon.dart';
 import 'package:hackathon_study_materials/utils/open_material.dart';
@@ -106,6 +107,7 @@ class HomeView extends StatelessWidget {
               ),
               SizedBox(height: 28),
               TextField(
+                controller: model.searchController,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Palette.lightGrey,
@@ -128,72 +130,24 @@ class HomeView extends StatelessWidget {
                   contentPadding: EdgeInsets.symmetric(vertical: 10),
                 ),
                 cursorColor: Colors.black,
+                onChanged: (value) => model.notifyListeners(),
               ),
               SizedBox(height: 60),
-              Text(
-                'Recently uploaded',
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.6),
-                  fontWeight: FontWeight.w500,
+              if (model.searchController.text.isEmpty)
+                Text(
+                  'Recently uploaded',
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.6),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              SizedBox(height: 32),
-              FutureBuilder<List<StudyMaterial>>(
-                future: model.getRecentMaterials(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Palette.darkGrey,
-                        ),
-                      ),
-                    );
-                  }
-                  if (snapshot.data!.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        top: 48,
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/undraw_not_found_-60-pq 1.png',
-                              width: 200,
-                            ),
-                            SizedBox(height: 36),
-                            Text(
-                              'Nothing here yet. Go to the modules tab to add some study materials',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black.withOpacity(0.4),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return Column(
-                    children: snapshot.data!
-                        .map(
-                          (material) => Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: MyListTile(
-                              title: material.title,
-                              subtitle: formatDateTime(material.dateCreated),
-                              iconData: getMaterialIcon(material.type),
-                              suffixIcons: const {},
-                              onPressed: () => openMaterial(material),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  );
-                },
+              if (model.searchController.text.isEmpty) SizedBox(height: 32),
+              MaterialListView(
+                future: model.searchController.text.isEmpty
+                    ? model.getRecentMaterials()
+                    : model.getSearchResults(model.searchController.text),
+                getSubtitle: (material) => formatDateTime(material.dateCreated),
+                showPins: false,
               ),
             ],
           ),
