@@ -151,6 +151,32 @@ class HomeView extends StatelessWidget {
                       ),
                     );
                   }
+                  if (snapshot.data!.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: 48,
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/undraw_not_found_-60-pq 1.png',
+                              width: 200,
+                            ),
+                            SizedBox(height: 36),
+                            Text(
+                              'Nothing here yet. Go to the modules tab to add some study materials',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black.withOpacity(0.4),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   return Column(
                     children: snapshot.data!
                         .map(

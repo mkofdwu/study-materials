@@ -92,6 +92,7 @@ class ModuleApiService {
       'moduleId': moduleId,
       'topicId': topicId,
       'title': title,
+      'url': '',
       'content': content,
       'type': 'Note',
       'pinned': false,
@@ -111,7 +112,9 @@ class ModuleApiService {
     return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 
-  Future<List<StudyMaterial>> getTopicMaterials(String topicId) async {
+  Future<List<StudyMaterial>> getTopicMaterials(
+      String topicId, String? filterByType) async {
+    // TODO: filter by type
     final snapshot = await _materialsRef
         .where('topicId', isEqualTo: topicId)
         .orderBy('pinned', descending: true)
@@ -119,8 +122,10 @@ class ModuleApiService {
     return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 
-  Future<List<StudyMaterial>> getRecentMaterials(int limit) async {
+  Future<List<StudyMaterial>> getRecentMaterials(
+      String ownerId, int limit) async {
     final snapshot = await _materialsRef
+        .where('ownerId', isEqualTo: ownerId)
         .orderBy('dateCreated', descending: true)
         .limit(limit)
         .get();

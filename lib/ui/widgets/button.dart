@@ -8,6 +8,7 @@ class MyButton extends StatefulWidget {
   final bool isPrimary;
   final FutureOr<dynamic> Function() onPressed;
   final bool fillWidth;
+  final bool isLoading;
 
   const MyButton({
     Key? key,
@@ -15,6 +16,7 @@ class MyButton extends StatefulWidget {
     this.isPrimary = true,
     required this.onPressed,
     this.fillWidth = false,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -47,13 +49,22 @@ class _MyButtonState extends State<MyButton> {
           borderRadius: BorderRadius.circular(20),
         ),
         alignment: widget.fillWidth ? Alignment.center : null,
-        child: Text(
-          widget.text.toUpperCase(),
-          style: TextStyle(
-            color: widget.isPrimary ? Colors.white : Colors.black,
-            fontWeight: FontWeight.w500,
-            letterSpacing: 1.2,
-          ),
-        ),
+        child: widget.isLoading
+            ? SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : Text(
+                widget.text.toUpperCase(),
+                style: TextStyle(
+                  color: widget.isPrimary ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.2,
+                ),
+              ),
       );
 }

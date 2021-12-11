@@ -5,6 +5,7 @@ class FlexibleFormPageViewModel extends BaseViewModel {
   final Map<String, TextEditingController> _controllers = {};
   final Map<String, dynamic> _customWidgetValues = {};
   Map<String, String> inputErrors = {};
+  bool isLoading = false;
 
   final void Function(
     Map<String, dynamic> inputs,
@@ -33,8 +34,11 @@ class FlexibleFormPageViewModel extends BaseViewModel {
     final allInputs = _controllers.map<String, dynamic>(
         (field, controller) => MapEntry(field, controller.text));
     allInputs.addAll(_customWidgetValues);
+    isLoading = true;
+    notifyListeners();
     _submit(allInputs, (errors) {
       inputErrors = errors;
+      isLoading = false;
       notifyListeners();
     });
   }

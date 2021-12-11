@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 import 'package:hackathon_study_materials/datamodels/found_material.dart';
 import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
+import 'package:hackathon_study_materials/utils/get_material_icon.dart';
 import 'package:stacked/stacked.dart';
 
 import 'review_found_viewmodel.dart';
@@ -72,7 +73,7 @@ class ReviewFoundView extends StatelessWidget {
                         child: MyListTile(
                           title: found.title,
                           subtitle: found.siteName,
-                          iconData: FluentIcons.link_20_regular,
+                          iconData: getMaterialIcon(found.siteName),
                           suffixIcons: found.selected
                               ? {
                                   FluentIcons.checkmark_20_regular: () =>

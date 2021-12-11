@@ -30,7 +30,7 @@ class SettingsViewModel extends BaseViewModel {
         fieldsToWidgets: {
           'title': 'TextField:Title',
           'siteUrl': 'TextField:Site url',
-          'queryUrl': 'TextField:Query url',
+          'queryUrl': 'TextField:Query url (optional)',
         },
         onSubmit: (inputs, setErrors) async {
           final errors = {
@@ -63,7 +63,7 @@ class SettingsViewModel extends BaseViewModel {
         fieldsToWidgets: {
           'title': 'TextField:Title',
           'siteUrl': 'TextField:Site url',
-          'queryUrl': 'TextField:Query url',
+          'queryUrl': 'TextField:Query url (optional)',
         },
         textDefaultValues: {
           'title': resourceSite.title,

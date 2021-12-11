@@ -7,6 +7,7 @@ import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
 import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
 import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
 import 'package:hackathon_study_materials/utils/get_material_icon.dart';
+import 'package:hackathon_study_materials/utils/open_material.dart';
 import 'package:hackathon_study_materials/utils/show_material_options.dart';
 import 'package:hackathon_study_materials/utils/show_module_options.dart';
 import 'package:stacked/stacked.dart';
@@ -158,12 +159,13 @@ class ModuleView extends StatelessWidget {
                                       FluentIcons.pin_20_filled: () {},
                                     // FluentIcons.more_vertical_20_regular: () =>
                                     //     showMaterialOptions(
+                                    //       module.topics,
                                     //       topic,
                                     //       material,
                                     //       model.notifyListeners,
                                     //     ),
                                   },
-                                  onPressed: () {},
+                                  onPressed: () => openMaterial(material),
                                 ),
                               ),
                             )

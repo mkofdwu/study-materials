@@ -50,5 +50,5 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<List<StudyMaterial>> getRecentMaterials() =>
-      _moduleApi.getRecentMaterials(8);
+      _moduleApi.getRecentMaterials(_userStore.currentUser.id, 8);
 }

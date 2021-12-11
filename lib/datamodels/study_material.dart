@@ -31,7 +31,7 @@ class StudyMaterial {
       topicId: data['topicId'],
       type: data['type'],
       title: data['title'],
-      url: data['url'],
+      url: data['url'] ?? '',
       content: data['content'],
       pinned: data['pinned'],
       dateCreated: data['dateCreated'].toDate(),

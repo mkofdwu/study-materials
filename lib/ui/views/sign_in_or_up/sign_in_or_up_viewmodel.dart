@@ -14,6 +14,7 @@ class SignInOrUpViewModel extends BaseViewModel {
   final confirmPasswordController = TextEditingController();
 
   bool signingUp;
+  bool isLoading = false;
 
   SignInOrUpViewModel(this.signingUp);
 
@@ -24,12 +25,12 @@ class SignInOrUpViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void confirm() {
-    if (signingUp) {
-      signUp();
-    } else {
-      signIn();
-    }
+  Future<void> confirm() async {
+    isLoading = true;
+    notifyListeners();
+    await (signingUp ? signUp() : signIn());
+    isLoading = false;
+    notifyListeners();
   }
 
   Future<void> signIn() async {

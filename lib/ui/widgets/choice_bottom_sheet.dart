@@ -13,7 +13,6 @@ class ChoiceBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 30, top: 24, right: 30, bottom: 30),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -21,41 +20,46 @@ class ChoiceBottomSheet extends StatelessWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-              Text(
-                request.title!,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              if (request.description != null) SizedBox(height: 12),
-              if (request.description != null)
-                Text(
-                  request.description!,
-                  style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                ),
-              SizedBox(height: 24),
-            ] +
-            (request.data as List<String>)
-                .map((choice) => PressedFeedback(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(choice, style: TextStyle(fontSize: 16)),
-                      ),
-                      onPressed: () => completer(
-                          SheetResponse(confirmed: true, data: choice)),
-                    ))
-                .toList() +
-            [
-              PressedFeedback(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text('Cancel', style: TextStyle(fontSize: 16)),
-                ),
-                onPressed: () => completer(SheetResponse(confirmed: false)),
-              )
-            ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30, 24, 30, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+                  Text(
+                    request.title!,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
+                  if (request.description != null) SizedBox(height: 12),
+                  if (request.description != null)
+                    Text(
+                      request.description!,
+                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                    ),
+                  SizedBox(height: 24),
+                ] +
+                (request.data as List<String>)
+                    .map((choice) => PressedFeedback(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(choice, style: TextStyle(fontSize: 16)),
+                          ),
+                          onPressed: () => completer(
+                              SheetResponse(confirmed: true, data: choice)),
+                        ))
+                    .toList() +
+                [
+                  PressedFeedback(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text('Cancel', style: TextStyle(fontSize: 16)),
+                    ),
+                    onPressed: () => completer(SheetResponse(confirmed: false)),
+                  )
+                ],
+          ),
+        ),
       ),
     );
   }

@@ -44,6 +44,7 @@ class FlexibleFormPage extends StatelessWidget {
       floatingActionButton: MyButton(
         text: 'Submit',
         onPressed: model.submit,
+        isLoading: model.isLoading,
       ),
       body: SafeArea(
         child: Padding(

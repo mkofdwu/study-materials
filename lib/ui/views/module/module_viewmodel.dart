@@ -4,6 +4,7 @@ import 'package:hackathon_study_materials/datamodels/found_material.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
+import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
@@ -16,6 +17,7 @@ class ModuleViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
   final _navigationService = locator<NavigationService>();
   final _googleSearchService = locator<GoogleSearchService>();
+  final _bottomSheetService = locator<BottomSheetService>();
   final _moduleApi = locator<ModuleApiService>();
 
   final Module _module;
@@ -59,7 +61,7 @@ class ModuleViewModel extends BaseViewModel {
             arguments: FlexibleFormPageArguments(
               title: 'Review materials',
               subtitle:
-                  "We've gathered some study material you may be interested in. Choose which to add to MA4132",
+                  "We've gathered some study material you may be interested in. Choose which to add to ${_module.title}",
               fieldsToWidgets: {
                 'materials': (onValueChanged) => ReviewFoundView(
                       topicToFound: topicToFound,
@@ -103,7 +105,25 @@ class ModuleViewModel extends BaseViewModel {
 
   void goToSearch() {}
 
-  void goToFilter() {}
+  void goToFilter() {
+    _bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.choice,
+      title: 'Filter materials',
+      description: 'Only show materials of type',
+      // this does not take into account custom set types
+      data: _userStore.currentUser.resourceSites
+          .map((site) => site.title)
+          .toList(),
+    );
+  }
+
+  void setSortBy() {
+    _bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.choice,
+      title: 'Sort materials by',
+      data: ['Date created', 'Name'],
+    );
+  }
 
   Future<List<StudyMaterial>> getMaterials() =>
       _moduleApi.getModuleMaterials(_module.id);

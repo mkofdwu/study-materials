@@ -10,8 +10,8 @@ void openMaterial(StudyMaterial material) {
     locator<NavigationService>().navigateTo(
       Routes.noteView,
       arguments: NoteViewArguments(
-        title: '',
-        content: '',
+        title: material.title,
+        content: material.content!,
         saveNote: (title, content) async {
           material.title = title;
           material.content = content;

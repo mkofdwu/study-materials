@@ -24,6 +24,8 @@ class TopicViewModel extends BaseViewModel {
   final Topic _topic;
   final Module _parentModule;
 
+  String? filterByType;
+
   TopicViewModel(this._topic, this._parentModule);
 
   void goToFindMaterial() {
@@ -60,7 +62,7 @@ class TopicViewModel extends BaseViewModel {
             arguments: FlexibleFormPageArguments(
               title: 'Review materials',
               subtitle:
-                  "We've gathered some study material you may be interested in. Choose which to add to MA4132",
+                  "We've gathered some study material you may be interested in. Choose which to add to '${_topic.title}'",
               fieldsToWidgets: {
                 'materials': (onValueChanged) => ReviewFoundView(
                       topicToFound: {_topic.title: foundMaterials},
@@ -90,8 +92,8 @@ class TopicViewModel extends BaseViewModel {
     );
   }
 
-  Future<List<StudyMaterial>> getMaterials() =>
-      _moduleApi.getTopicMaterials(_topic.id);
+  Future<List<StudyMaterial>> getMaterials(String? filterByType) =>
+      _moduleApi.getTopicMaterials(_topic.id, filterByType);
 
   void goToAddLink() {
     _navigationService.navigateTo(
@@ -147,7 +149,22 @@ class TopicViewModel extends BaseViewModel {
 
   void goToSearch() {}
 
-  void goToFilter() {}
+  void goToFilter() async {
+    final response = await _bottomSheetService.showCustomSheet(
+      variant: BottomSheetType.choice,
+      title: 'Filter materials',
+      description: 'Only show materials of type',
+      // this does not take into account custom set types
+      data: _userStore.currentUser.resourceSites
+              .map((site) => site.title)
+              .toList() +
+          ['Note'],
+    );
+    if (response != null && response.confirmed) {
+      filterByType = response.data;
+      notifyListeners();
+    }
+  }
 
   Future<void> showTopicOptions() async {
     final response = await _bottomSheetService.showCustomSheet(
