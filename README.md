@@ -6,6 +6,6 @@ Made for appventure hackathon
 
 ## How to run
 
-Download and set up flutter from (flutter.dev)[https://flutter.dev].
+Download and set up flutter from [flutter.dev](https://flutter.dev).
 Run `flutter run` from root directory
 If you don't want to install flutter download the apk from releases.
