@@ -76,6 +76,7 @@ class ModuleViewModel extends BaseViewModel {
                   for (final found in inputs['materials'][topicName]) {
                     if (found.selected) {
                       final material = await _moduleApi.addFoundMaterial(
+                        _userStore.currentUser.id,
                         _module.id,
                         topic.id,
                         found,

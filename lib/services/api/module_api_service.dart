@@ -39,8 +39,13 @@ class ModuleApiService {
   }
 
   Future<StudyMaterial> addFoundMaterial(
-      String moduleId, String topicId, FoundMaterial found) async {
+    String ownerId,
+    String moduleId,
+    String topicId,
+    FoundMaterial found,
+  ) async {
     final ref = await _materialsRef.add({
+      'ownerId': ownerId,
       'moduleId': moduleId,
       'topicId': topicId,
       'title': found.title,
@@ -58,12 +63,14 @@ class ModuleApiService {
   }
 
   Future<StudyMaterial> addLink(
+    String ownerId,
     String moduleId,
     String topicId,
     String title,
     String url,
   ) async {
     final ref = await _materialsRef.add({
+      'ownerId': ownerId,
       'moduleId': moduleId,
       'topicId': topicId,
       'title': title,
@@ -79,12 +86,14 @@ class ModuleApiService {
   }
 
   Future<StudyMaterial> addNote(
+    String ownerId,
     String moduleId,
     String topicId,
     String title,
     String content,
   ) async {
     final ref = await _materialsRef.add({
+      'ownerId': ownerId,
       'moduleId': moduleId,
       'topicId': topicId,
       'title': title,

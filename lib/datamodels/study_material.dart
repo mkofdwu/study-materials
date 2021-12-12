@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StudyMaterial {
   String id;
+  String ownerId;
   String moduleId;
   String? topicId;
   String type; // one of: '#postFromTeacher', '#note' or <name of resource site>
@@ -13,6 +14,7 @@ class StudyMaterial {
 
   StudyMaterial({
     required this.id,
+    required this.ownerId,
     required this.moduleId,
     this.topicId,
     required this.type,
@@ -27,6 +29,7 @@ class StudyMaterial {
     final data = doc.data()!;
     return StudyMaterial(
       id: doc.id,
+      ownerId: data['ownerId'],
       moduleId: data['moduleId'],
       topicId: data['topicId'],
       type: data['type'],
@@ -40,6 +43,7 @@ class StudyMaterial {
 
   Map<String, dynamic> toMap() {
     return {
+      'ownerId': ownerId,
       'moduleId': moduleId,
       'topicId': topicId,
       'type': type,

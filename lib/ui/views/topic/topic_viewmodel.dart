@@ -73,6 +73,7 @@ class TopicViewModel extends BaseViewModel {
                 for (final found in inputs['materials'][_topic.title]) {
                   if (found.selected) {
                     final material = await _moduleApi.addFoundMaterial(
+                      _userStore.currentUser.id,
                       _topic.moduleId,
                       _topic.id,
                       found,
@@ -117,6 +118,7 @@ class TopicViewModel extends BaseViewModel {
           }
 
           final material = await _moduleApi.addLink(
+            _userStore.currentUser.id,
             _topic.moduleId,
             _topic.id,
             inputs['title'],
@@ -138,6 +140,7 @@ class TopicViewModel extends BaseViewModel {
         content: '',
         saveNote: (title, content) async {
           final material = await _moduleApi.addNote(
+            _userStore.currentUser.id,
             _topic.moduleId,
             _topic.id,
             title,

@@ -16,11 +16,6 @@ Future<void> main() async {
   setupLocator();
   setupBottomSheetUi();
   setupSnackbarUi();
-  final snapshot =
-      await FirebaseFirestore.instance.collection('materials').get();
-  for (final doc in snapshot.docs) {
-    await doc.reference.update({'ownerId': 'YdyU8O2dLibVcCQukpTsY3E3air2'});
-  }
   runApp(MyApp());
 }
 
