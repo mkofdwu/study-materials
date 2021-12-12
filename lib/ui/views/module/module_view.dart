@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
 import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
@@ -19,15 +18,18 @@ class ModuleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ModuleViewModel>.reactive(
-      builder: (context, model, child) => _builder(model),
+      builder: (context, model, child) => _builder(context, model),
       viewModelBuilder: () => ModuleViewModel(module),
     );
   }
 
-  Widget _builder(ModuleViewModel model) => Scaffold(
+  Widget _builder(BuildContext context, ModuleViewModel model) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: Icon(FluentIcons.add_20_regular),
-          backgroundColor: Palette.darkGrey,
+          child: Icon(
+            FluentIcons.add_20_regular,
+            color: Theme.of(context).backgroundColor,
+          ),
+          backgroundColor: Theme.of(context).accentColor,
           onPressed: model.goToAddTopic,
         ),
         body: SafeArea(
@@ -37,7 +39,26 @@ class ModuleView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyBackButton(),
+                  Row(
+                    children: [
+                      MyBackButton(),
+                      Spacer(),
+                      PressedFeedback(
+                        child: Icon(FluentIcons.search_20_regular, size: 20),
+                        onPressed: model.goToSearch,
+                      ),
+                      SizedBox(width: 16),
+                      PressedFeedback(
+                        child: Icon(FluentIcons.more_vertical_20_regular,
+                            size: 20),
+                        onPressed: () => showModuleOptions(
+                          module,
+                          model.notifyListeners,
+                          backOnDelete: true,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 40),
                   Container(
                     width: 60,
@@ -67,35 +88,11 @@ class ModuleView extends StatelessWidget {
                     '${module.topics.length} topics',
                     style: TextStyle(fontSize: 14),
                   ),
-                  SizedBox(height: 24),
-                  Row(
-                    children: [
-                      PressedFeedback(
-                        child: Icon(FluentIcons.search_20_regular, size: 20),
-                        onPressed: model.goToSearch,
-                      ),
-                      SizedBox(width: 16),
-                      PressedFeedback(
-                        child: Icon(FluentIcons.filter_20_regular, size: 20),
-                        onPressed: model.goToFilter,
-                      ),
-                      SizedBox(width: 16),
-                      PressedFeedback(
-                        child: Icon(FluentIcons.more_vertical_20_regular,
-                            size: 20),
-                        onPressed: () => showModuleOptions(
-                          module,
-                          model.notifyListeners,
-                          backOnDelete: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 54),
                   Text(
                     'Topics',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Theme.of(context).primaryColor.withOpacity(0.6),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -103,7 +100,9 @@ class ModuleView extends StatelessWidget {
                   if (module.topics.isEmpty)
                     Text(
                       'Click the add button at the bottom to create a new topic!',
-                      style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.4)),
                     ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +127,7 @@ class ModuleView extends StatelessWidget {
                   Text(
                     'All materials',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Theme.of(context).primaryColor.withOpacity(0.6),
                       fontWeight: FontWeight.w500,
                     ),
                   ),

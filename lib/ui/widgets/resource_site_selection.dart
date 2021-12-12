@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/resource_site.dart';
 
 class ResourceSiteSelection extends StatefulWidget {
@@ -25,7 +24,7 @@ class _ResourceSiteSelectionState extends State<ResourceSiteSelection> {
             Text(
               'Search for supplementary material',
               style: TextStyle(
-                color: Colors.black.withOpacity(0.4),
+                color: Theme.of(context).primaryColor.withOpacity(0.4),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -37,7 +36,9 @@ class _ResourceSiteSelectionState extends State<ResourceSiteSelection> {
                   height: 24,
                   width: 24,
                   child: Checkbox(
-                    activeColor: Palette.darkGrey,
+                    side: BorderSide(color: Theme.of(context).accentColor),
+                    activeColor: Theme.of(context).accentColor,
+                    checkColor: Theme.of(context).backgroundColor,
                     value: _selection.length == widget.resourceSites.length,
                     onChanged: (selected) {
                       if (selected ?? false) {
@@ -64,7 +65,9 @@ class _ResourceSiteSelectionState extends State<ResourceSiteSelection> {
                       height: 24,
                       width: 24,
                       child: Checkbox(
-                        activeColor: Palette.darkGrey,
+                        side: BorderSide(color: Theme.of(context).accentColor),
+                        activeColor: Theme.of(context).accentColor,
+                        checkColor: Theme.of(context).backgroundColor,
                         value: _selection.contains(resourceSite),
                         onChanged: (selected) {
                           if (selected ?? false) {

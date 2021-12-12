@@ -11,6 +11,10 @@ class ModulesViewModel extends BaseViewModel {
 
   List<Module> get modules => _userStore.currentUser.modules!;
 
+  void goToSearch() {
+    _navigationService.navigateTo(Routes.searchView);
+  }
+
   void goToModule(Module module) {
     _navigationService.navigateTo(
       Routes.moduleView,

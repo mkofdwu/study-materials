@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
-import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/ui/views/modules/modules_view.dart';
 import 'package:hackathon_study_materials/ui/views/settings/settings_view.dart';
-import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
 import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
 import 'package:hackathon_study_materials/utils/format_date_time.dart';
-import 'package:hackathon_study_materials/utils/get_material_icon.dart';
-import 'package:hackathon_study_materials/utils/open_material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
 
@@ -20,12 +15,15 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
-        body: SafeArea(child: _buildBody(model)),
+        body: SafeArea(child: _buildBody(context, model)),
         // a bit awkward to put it here
         floatingActionButton: model.currentTab == 1
             ? FloatingActionButton(
-                child: Icon(FluentIcons.add_20_regular),
-                backgroundColor: Palette.darkGrey,
+                child: Icon(
+                  FluentIcons.add_20_regular,
+                  color: Theme.of(context).backgroundColor,
+                ),
+                backgroundColor: Theme.of(context).accentColor,
                 onPressed: model.goToAddModule,
               )
             : null,
@@ -33,18 +31,22 @@ class HomeView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),
           decoration: BoxDecoration(
             border: Border(
-              top: BorderSide(color: Colors.black.withOpacity(0.1)),
+              top: BorderSide(
+                color: Theme.of(context).primaryColor.withOpacity(0.1),
+              ),
             ),
           ),
           child: BottomNavigationBar(
             currentIndex: model.currentTab,
             onTap: model.onSelectTab,
             elevation: 0,
-            selectedItemColor: Colors.black,
-            unselectedItemColor: Colors.black.withOpacity(0.6),
+            selectedItemColor: Theme.of(context).primaryColor,
+            unselectedItemColor:
+                Theme.of(context).primaryColor.withOpacity(0.6),
             selectedFontSize: 12,
             selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
             enableFeedback: false,
+            backgroundColor: Theme.of(context).backgroundColor,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(FluentIcons.home_20_regular),
@@ -69,10 +71,10 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(HomeViewModel model) {
+  Widget _buildBody(BuildContext context, HomeViewModel model) {
     switch (model.currentTab) {
       case 0:
-        return _buildHomeView(model);
+        return _buildHomeView(context, model);
       case 1:
         return ModulesView();
       case 2:
@@ -83,7 +85,8 @@ class HomeView extends StatelessWidget {
   }
 
 // duplication
-  Widget _buildHomeView(HomeViewModel model) => SingleChildScrollView(
+  Widget _buildHomeView(BuildContext context, HomeViewModel model) =>
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 48),
           child: Column(
@@ -110,7 +113,7 @@ class HomeView extends StatelessWidget {
                 controller: model.searchController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Palette.lightGrey,
+                  fillColor: Theme.of(context).primaryColorLight,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(6),
@@ -120,16 +123,19 @@ class HomeView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   hintText: 'Quick search',
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).primaryColor.withOpacity(0.4),
+                  ),
                   prefixIcon: Icon(
                     FluentIcons.search_20_regular,
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColor,
                   ),
                   prefixIconConstraints:
                       BoxConstraints(minWidth: 40, minHeight: 20),
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 10),
                 ),
-                cursorColor: Colors.black,
+                cursorColor: Theme.of(context).primaryColor,
                 onChanged: (value) => model.notifyListeners(),
               ),
               SizedBox(height: 60),
@@ -137,7 +143,7 @@ class HomeView extends StatelessWidget {
                 Text(
                   'Recently uploaded',
                   style: TextStyle(
-                    color: Colors.black.withOpacity(0.6),
+                    color: Theme.of(context).primaryColor.withOpacity(0.6),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

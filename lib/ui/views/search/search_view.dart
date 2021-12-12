@@ -16,23 +16,25 @@ class SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SearchViewModel>.reactive(
-      builder: (context, model, child) => _builder(model),
+      builder: (context, model, child) => _builder(context, model),
       viewModelBuilder: () => SearchViewModel(module, topic),
     );
   }
 
-  Widget _builder(SearchViewModel model) => Scaffold(
+  Widget _builder(BuildContext context, SearchViewModel model) => Scaffold(
         appBar: AppBar(
-          leading: Icon(FluentIcons.search_20_regular, color: Colors.white),
+          leading: Icon(FluentIcons.search_20_regular,
+              color: Theme.of(context).backgroundColor),
           title: TextField(
             controller: model.searchController,
-            style: TextStyle(color: Colors.white),
-            cursorColor: Colors.white,
+            style: TextStyle(color: Theme.of(context).backgroundColor),
+            cursorColor: Theme.of(context).backgroundColor,
             decoration: InputDecoration(
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               hintText: 'Search',
-              hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+              hintStyle: TextStyle(
+                  color: Theme.of(context).backgroundColor.withOpacity(0.6)),
             ),
             onChanged: (value) => model.notifyListeners(),
           ),
@@ -41,7 +43,10 @@ class SearchView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: PressedFeedback(
                 onPressed: model.dismiss,
-                child: Icon(FluentIcons.dismiss_20_regular),
+                child: Icon(
+                  FluentIcons.dismiss_20_regular,
+                  color: Theme.of(context).backgroundColor,
+                ),
               ),
             ),
           ],
@@ -57,12 +62,22 @@ class SearchView extends StatelessWidget {
                 children: [
                   if (model.moduleFilter != null)
                     Chip(
-                      label: Text('Module: ' + module!.title),
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      label: Text(
+                        'Module: ' + module!.title,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                      deleteIconColor: Theme.of(context).primaryColor,
                       onDeleted: model.removeModuleFilter,
                     ),
                   if (model.topicFilter != null)
                     Chip(
-                      label: Text('Topic: ' + topic!.title),
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      label: Text(
+                        'Topic: ' + topic!.title,
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                      deleteIconColor: Theme.of(context).primaryColor,
                       onDeleted: model.removeTopicFilter,
                     ),
                 ],

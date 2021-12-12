@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 
 class MyButton extends StatefulWidget {
   final String text;
@@ -45,7 +44,9 @@ class _MyButtonState extends State<MyButton> {
   Widget _mainUi() => Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
         decoration: BoxDecoration(
-          color: widget.isPrimary ? Palette.darkGrey : Palette.lightGrey,
+          color: widget.isPrimary
+              ? Theme.of(context).accentColor
+              : Theme.of(context).primaryColorLight,
           borderRadius: BorderRadius.circular(20),
         ),
         alignment: widget.fillWidth ? Alignment.center : null,
@@ -54,14 +55,16 @@ class _MyButtonState extends State<MyButton> {
                 width: 16,
                 height: 16,
                 child: CircularProgressIndicator(
-                  color: Colors.white,
+                  color: Theme.of(context).backgroundColor,
                   strokeWidth: 2,
                 ),
               )
             : Text(
                 widget.text.toUpperCase(),
                 style: TextStyle(
-                  color: widget.isPrimary ? Colors.white : Colors.black,
+                  color: widget.isPrimary
+                      ? Theme.of(context).backgroundColor
+                      : Theme.of(context).primaryColor,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 1.2,
                 ),

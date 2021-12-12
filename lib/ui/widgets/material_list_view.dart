@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/ui/widgets/list_tile.dart';
 import 'package:hackathon_study_materials/utils/get_material_icon.dart';
@@ -33,7 +32,7 @@ class MaterialListView extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20),
             child: Center(
               child: CircularProgressIndicator(
-                color: Palette.darkGrey,
+                color: Theme.of(context).accentColor,
               ),
             ),
           );
@@ -56,7 +55,7 @@ class MaterialListView extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Colors.black.withOpacity(0.4),
+                      color: Theme.of(context).primaryColor.withOpacity(0.4),
                     ),
                   ),
                 ],

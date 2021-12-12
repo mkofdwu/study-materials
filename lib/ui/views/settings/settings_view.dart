@@ -53,6 +53,11 @@ class SettingsView extends StatelessWidget {
               SizedBox(height: 20),
               _buildActionSetting('Profile', model.goToProfile),
               SizedBox(height: 20),
+              _buildActionSetting(
+                model.isDarkMode ? 'Light mode' : 'Dark mode',
+                model.toggleDarkMode,
+              ),
+              SizedBox(height: 20),
               _buildActionSetting('Sign out', model.signOut),
             ],
           ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_study_materials/app/app.locator.dart';
+import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class ChoiceBottomSheet extends StatelessWidget {
   final SheetRequest request;
@@ -14,7 +17,12 @@ class ChoiceBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        // not sure why this isn't working
+        // color: Theme.of(context).backgroundColor,
+        // but this works
+        color: locator<ThemeService>().isDarkMode
+            ? Palette.darkGrey
+            : Palette.lightGrey,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -35,7 +43,9 @@ class ChoiceBottomSheet extends StatelessWidget {
                   if (request.description != null)
                     Text(
                       request.description!,
-                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.6)),
                     ),
                   SizedBox(height: 24),
                 ] +

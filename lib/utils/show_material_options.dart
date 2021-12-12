@@ -149,7 +149,7 @@ class _TopicSelectorState extends State<TopicSelector> {
         Text(
           'Topic',
           style: TextStyle(
-            color: Colors.black.withOpacity(0.4),
+            color: Theme.of(context).primaryColor.withOpacity(0.4),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),

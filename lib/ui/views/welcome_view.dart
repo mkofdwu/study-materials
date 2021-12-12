@@ -14,6 +14,10 @@ class WelcomeView extends StatelessWidget {
     );
   }
 
+  void _goToAbout() {
+    locator<NavigationService>().navigateTo(Routes.aboutView);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,20 +61,35 @@ class WelcomeView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'About',
+                    'Version 0.1',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.2),
+                      color: Theme.of(context).primaryColor.withOpacity(0.2),
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(width: 20),
-                  Text(
-                    'Version 0.1',
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.2),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: _goToAbout,
+                    child: Text(
+                      'About',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  GestureDetector(
+                    onTap: () => showLicensePage(context: context),
+                    child: Text(
+                      'Licenses',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],

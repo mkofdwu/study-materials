@@ -92,7 +92,11 @@ class TopicViewModel extends BaseViewModel {
   }
 
   Future<List<StudyMaterial>> getMaterials(String? filterByType) =>
-      _moduleApi.getTopicMaterials(_topic.id, filterByType);
+      _moduleApi.getMaterials(
+        _topic.moduleId,
+        topicId: _topic.id,
+        filterByType: filterByType,
+      );
 
   void goToAddLink() {
     _navigationService.navigateTo(
@@ -153,7 +157,12 @@ class TopicViewModel extends BaseViewModel {
     );
   }
 
-  void goToFilter() async {
+  void setFilter() async {
+    if (filterByType != null) {
+      filterByType = null;
+      notifyListeners();
+      return;
+    }
     final response = await _bottomSheetService.showCustomSheet(
       variant: BottomSheetType.choice,
       title: 'Filter materials',

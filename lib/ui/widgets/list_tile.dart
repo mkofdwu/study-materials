@@ -29,7 +29,8 @@ class MyListTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(25),
                 border: iconData == null
                     ? null
-                    : Border.all(color: Colors.black.withOpacity(0.1)),
+                    : Border.all(
+                        color: Theme.of(context).primaryColor.withOpacity(0.1)),
                 color: iconData == null ? Color(color!) : null,
               ),
               child: Center(
@@ -42,7 +43,7 @@ class MyListTile extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       )
-                    : Icon(iconData, color: Colors.black),
+                    : Icon(iconData, color: Theme.of(context).primaryColor),
               ),
             ),
             SizedBox(width: 18),
@@ -64,7 +65,7 @@ class MyListTile extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
+                        color: Theme.of(context).primaryColor.withOpacity(0.8),
                         fontSize: 12,
                       ),
                     ),

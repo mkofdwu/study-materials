@@ -23,7 +23,8 @@ Future<void> showModuleOptions(
   if (response != null && response.confirmed) {
     switch (response.data) {
       case 'Connect to team':
-      // TODO (needs a verified publisher)
+        // TODO (needs a verified publisher)
+        break;
       case 'Rename module':
         final response = await _bottomSheetService.showCustomSheet(
           variant: BottomSheetType.input,

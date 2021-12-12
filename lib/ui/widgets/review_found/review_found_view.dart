@@ -22,7 +22,12 @@ class ReviewFoundView extends StatelessWidget {
     return ViewModelBuilder<ReviewFoundViewModel>.reactive(
       builder: (context, model, child) => SingleChildScrollView(
         child: topicToFound.length == 1
-            ? _buildFoundMaterialsList(model, topicToFound.values.first, null)
+            ? _buildFoundMaterialsList(
+                context,
+                model,
+                topicToFound.values.first,
+                null,
+              )
             // dont show topic title if is only one
             : Column(
                 children: topicToFound
@@ -30,6 +35,7 @@ class ReviewFoundView extends StatelessWidget {
                       (topicName, foundMaterials) => MapEntry(
                         topicName,
                         _buildFoundMaterialsList(
+                          context,
                           model,
                           foundMaterials,
                           topicName,
@@ -46,6 +52,7 @@ class ReviewFoundView extends StatelessWidget {
   }
 
   Widget _buildFoundMaterialsList(
+    BuildContext context,
     ReviewFoundViewModel model,
     List<FoundMaterial> foundMaterials,
     String? topicName,
@@ -57,7 +64,7 @@ class ReviewFoundView extends StatelessWidget {
                     Text(
                       topicName,
                       style: TextStyle(
-                        color: Colors.black.withOpacity(0.4),
+                        color: Theme.of(context).primaryColor.withOpacity(0.4),
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),

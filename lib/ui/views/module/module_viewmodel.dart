@@ -110,18 +110,6 @@ class ModuleViewModel extends BaseViewModel {
     );
   }
 
-  void goToFilter() {
-    _bottomSheetService.showCustomSheet(
-      variant: BottomSheetType.choice,
-      title: 'Filter materials',
-      description: 'Only show materials of type',
-      // this does not take into account custom set types
-      data: _userStore.currentUser.resourceSites
-          .map((site) => site.title)
-          .toList(),
-    );
-  }
-
   void setSortBy() {
     _bottomSheetService.showCustomSheet(
       variant: BottomSheetType.choice,

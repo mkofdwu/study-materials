@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -24,7 +23,7 @@ class MyTextField extends StatelessWidget {
           Text(
             hintText!,
             style: TextStyle(
-              color: Colors.black.withOpacity(0.4),
+              color: Theme.of(context).primaryColor.withOpacity(0.4),
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -34,13 +33,14 @@ class MyTextField extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
             filled: true,
-            fillColor: Palette.lightGrey,
+            fillColor: Theme.of(context).primaryColorLight,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(6),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black.withOpacity(0.1)),
+              borderSide: BorderSide(
+                  color: Theme.of(context).primaryColor.withOpacity(0.1)),
               borderRadius: BorderRadius.circular(6),
             ),
             errorText: error,
@@ -56,6 +56,7 @@ class MyTextField extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             isDense: true,
           ),
+          cursorColor: Theme.of(context).primaryColor,
           obscureText: obscureText,
         ),
       ],

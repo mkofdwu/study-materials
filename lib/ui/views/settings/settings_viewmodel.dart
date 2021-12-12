@@ -8,6 +8,7 @@ import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class SettingsViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
@@ -17,6 +18,7 @@ class SettingsViewModel extends BaseViewModel {
   final _userApi = locator<UserApiService>();
   final _microsoftTeamsService = locator<MicrosoftTeamsService>();
   final _bottomSheetService = locator<BottomSheetService>();
+  final _themeService = locator<ThemeService>();
 
   List<ResourceSite> get resourceSites => _userStore.currentUser.resourceSites;
   int get numResults => _userStore.currentUser.numResults;
@@ -129,6 +131,13 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   void goToProfile() {}
+
+  bool get isDarkMode => _themeService.isDarkMode;
+
+  void toggleDarkMode() {
+    _themeService.toggleDarkLightTheme();
+    notifyListeners();
+  }
 
   Future<void> signOut() async {
     final response = await _bottomSheetService.showCustomSheet(

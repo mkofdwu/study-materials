@@ -6,7 +6,6 @@ import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/utils/random_color.dart';
 
 class ModuleApiService {
-  final _usersRef = FirebaseFirestore.instance.collection('users');
   final _modulesRef = FirebaseFirestore.instance.collection('modules');
   final _materialsRef = FirebaseFirestore.instance.collection('materials');
 
@@ -132,18 +131,6 @@ class ModuleApiService {
             .contains(searchQuery.toLowerCase()))
         .map((doc) => StudyMaterial.fromDoc(doc))
         .toList();
-  }
-
-  Future<List<StudyMaterial>> getTopicMaterials(
-    String topicId,
-    String? filterByType,
-  ) async {
-    // TODO: filter by type
-    final snapshot = await _materialsRef
-        .where('topicId', isEqualTo: topicId)
-        .orderBy('pinned', descending: true)
-        .get();
-    return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 
   Future<List<StudyMaterial>> getMaterials(

@@ -14,12 +14,12 @@ class SignInOrUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SignInOrUpViewModel>.reactive(
-      builder: (context, model, child) => _builder(model),
+      builder: (context, model, child) => _builder(context, model),
       viewModelBuilder: () => SignInOrUpViewModel(signUp),
     );
   }
 
-  Scaffold _builder(SignInOrUpViewModel model) {
+  Scaffold _builder(BuildContext context, SignInOrUpViewModel model) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -50,7 +50,7 @@ class SignInOrUpView extends StatelessWidget {
                   child: Text(
                     model.signingUp ? 'Sign in' : 'Sign up',
                     style: TextStyle(
-                      color: Colors.black.withOpacity(0.4),
+                      color: Theme.of(context).primaryColor.withOpacity(0.4),
                       fontSize: 14,
                     ),
                   ),

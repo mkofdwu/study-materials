@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/constants/fluent_icons.dart';
-import 'package:hackathon_study_materials/constants/palette.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';
@@ -21,15 +20,18 @@ class TopicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TopicViewModel>.reactive(
-      builder: (context, model, child) => _builder(model),
+      builder: (context, model, child) => _builder(context, model),
       viewModelBuilder: () => TopicViewModel(topic, parentModule),
     );
   }
 
-  Widget _builder(TopicViewModel model) => Scaffold(
+  Widget _builder(BuildContext context, TopicViewModel model) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: Icon(FluentIcons.add_20_regular),
-          backgroundColor: Palette.darkGrey,
+          child: Icon(
+            FluentIcons.add_20_regular,
+            color: Theme.of(context).backgroundColor,
+          ),
+          backgroundColor: Theme.of(context).accentColor,
           onPressed: model.goToFindMaterial,
         ),
         body: SafeArea(
@@ -69,8 +71,13 @@ class TopicView extends StatelessWidget {
                     ),
                     SizedBox(width: 16),
                     PressedFeedback(
-                      child: Icon(FluentIcons.filter_20_regular, size: 20),
-                      onPressed: model.goToFilter,
+                      child: Icon(
+                        model.filterByType == null
+                            ? FluentIcons.filter_20_regular
+                            : FluentIcons.filter_dismiss_20_filled,
+                        size: 20,
+                      ),
+                      onPressed: model.setFilter,
                     ),
                     SizedBox(width: 16),
                     PressedFeedback(
@@ -89,7 +96,8 @@ class TopicView extends StatelessWidget {
                         Text(
                           'Materials',
                           style: TextStyle(
-                            color: Colors.black.withOpacity(0.6),
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(0.6),
                             fontWeight: FontWeight.w500,
                           ),
                         ),

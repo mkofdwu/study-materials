@@ -30,7 +30,7 @@ class _InputBottomSheetState extends State<InputBottomSheet> {
     return Container(
       padding: EdgeInsets.only(left: 30, top: 24, right: 30, bottom: 30),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -48,7 +48,8 @@ class _InputBottomSheetState extends State<InputBottomSheet> {
           if (widget.request.description != null)
             Text(
               widget.request.description!,
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor.withOpacity(0.6)),
             ),
           SizedBox(height: 30),
           MyTextField(controller: _textController, error: _inputError),

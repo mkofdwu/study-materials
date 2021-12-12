@@ -15,7 +15,7 @@ class YesNoBottomSheet extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 30, top: 24, right: 30, bottom: 30),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -32,7 +32,8 @@ class YesNoBottomSheet extends StatelessWidget {
           SizedBox(height: 12),
           Text(
             request.description!,
-            style: TextStyle(color: Colors.black.withOpacity(0.6)),
+            style: TextStyle(
+                color: Theme.of(context).primaryColor.withOpacity(0.6)),
           ),
           SizedBox(height: 30),
           Row(

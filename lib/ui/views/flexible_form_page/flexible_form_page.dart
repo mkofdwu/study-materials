@@ -32,19 +32,22 @@ class FlexibleFormPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<FlexibleFormPageViewModel>.reactive(
-      builder: (context, model, child) => _builder(model),
+      builder: (context, model, child) => _builder(context, model),
       viewModelBuilder: () =>
           FlexibleFormPageViewModel(onSubmit, textDefaultValues ?? {}),
     );
   }
 
-  Scaffold _builder(FlexibleFormPageViewModel model) {
+  Scaffold _builder(BuildContext context, FlexibleFormPageViewModel model) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: MyButton(
-        text: 'Submit',
-        onPressed: model.submit,
-        isLoading: model.isLoading,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 32, right: 32),
+        child: MyButton(
+          text: 'Submit',
+          onPressed: model.submit,
+          isLoading: model.isLoading,
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -67,7 +70,7 @@ class FlexibleFormPage extends StatelessWidget {
                 Text(
                   subtitle!,
                   style: TextStyle(
-                    color: Colors.black.withOpacity(0.6),
+                    color: Theme.of(context).primaryColor.withOpacity(0.6),
                     fontSize: 14,
                   ),
                 ),
