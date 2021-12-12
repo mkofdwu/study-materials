@@ -21,6 +21,7 @@ Future<void> showMaterialOptions(
     title: material.title,
     data: [
       material.pinned ? 'Unpin material' : 'Pin material',
+      'Move to topic',
       'Edit details',
       'Delete material',
     ],
@@ -33,6 +34,21 @@ Future<void> showMaterialOptions(
         material.pinned = !material.pinned;
         await _moduleApi.editMaterial(material);
         notifyListeners();
+        break;
+      case 'Move to topic':
+        final response = await _bottomSheetService.showCustomSheet(
+          variant: BottomSheetType.choice,
+          title: 'Move material',
+          description: "Select a topic to move '${material.title}' to",
+          data: moduleTopics.map((topic) => topic.title).toList(),
+        );
+        if (response != null && response.confirmed) {
+          final toTopic =
+              moduleTopics.firstWhere((topic) => topic.title == response.data);
+          await moveToTopicIf(moduleTopics, material, toTopic);
+          await _moduleApi.editMaterial(material);
+          notifyListeners();
+        }
         break;
       case 'Edit details':
         if (material.type == 'Note') {
@@ -71,20 +87,9 @@ Future<void> showMaterialOptions(
                   return;
                 }
 
-                if (inputs['topicId'] != material.topicId) {
-                  // move from one topic to another
-                  // fixme nato ehsnuaoeunthasonteu h
-                  final fromTopic = moduleTopics
-                      .firstWhere((topic) => topic.id == material.topicId);
-                  final toTopic = moduleTopics
-                      .firstWhere((topic) => topic.id == inputs['topicId']);
-                  fromTopic.materialIds.remove(material.id);
-                  toTopic.materialIds.add(material.id);
-                  await _moduleApi.editTopic(fromTopic);
-                  await _moduleApi.editTopic(toTopic);
-
-                  material.topicId = inputs['topicId'];
-                }
+                final toTopic = moduleTopics
+                    .firstWhere((topic) => topic.id == inputs['topicId']);
+                await moveToTopicIf(moduleTopics, material, toTopic);
 
                 material.title = inputs['title'];
                 material.type = inputs['type'];
@@ -172,5 +177,26 @@ class _TopicSelectorState extends State<TopicSelector> {
         ),
       ],
     );
+  }
+}
+
+Future<void> moveToTopicIf(
+  List<Topic> moduleTopics,
+  StudyMaterial material,
+  Topic toTopic,
+) async {
+  final _moduleApi = locator<ModuleApiService>();
+
+  if (toTopic.id != material.topicId) {
+    // move from one topic to another
+    // fixme nato ehsnuaoeunthasonteu h
+    final fromTopic =
+        moduleTopics.firstWhere((topic) => topic.id == material.topicId);
+    fromTopic.materialIds.remove(material.id);
+    toTopic.materialIds.add(material.id);
+    await _moduleApi.editTopic(fromTopic);
+    await _moduleApi.editTopic(toTopic);
+
+    material.topicId = toTopic.id;
   }
 }

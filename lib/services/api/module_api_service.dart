@@ -152,10 +152,10 @@ class ModuleApiService {
       query = query.where('type', isEqualTo: filterByType);
     }
 
+    query = query.orderBy('pinned', descending: true);
+
     if (sortBy != null) {
-      query = query
-          .orderBy('pinned', descending: true)
-          .orderBy(sortBy, descending: descending);
+      query = query.orderBy(sortBy, descending: descending);
     }
 
     final snapshot = await query.get();
