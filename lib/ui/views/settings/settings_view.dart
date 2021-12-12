@@ -59,6 +59,7 @@ class SettingsView extends StatelessWidget {
               ),
               SizedBox(height: 20),
               _buildActionSetting('Sign out', model.signOut),
+              SizedBox(height: 48),
             ],
           ),
         ),

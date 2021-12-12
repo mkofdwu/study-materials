@@ -1,16 +1,11 @@
 # hackathon_study_materials
 
-A new Flutter project.
+Study materials is a simple app to find supplementary learning resources online based on your curriculum, organise notes and keep track of your learning.
 
-## Getting Started
+Made for appventure hackathon
 
-This project is a starting point for a Flutter application.
+## How to run
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Download and set up flutter from (flutter.dev)[https://flutter.dev].
+Run `flutter run` from root directory
+If you don't want to install flutter download the apk from releases.
