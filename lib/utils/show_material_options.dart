@@ -4,6 +4,7 @@ import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/utils/open_material.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -14,7 +15,7 @@ Future<void> showMaterialOptions(
   Function notifyListeners,
 ) async {
   final _bottomSheetService = locator<BottomSheetService>();
-  final _moduleApi = locator<ModuleApiService>();
+  final _materialApi = locator<MaterialApiService>();
 
   final response = await _bottomSheetService.showCustomSheet(
     variant: BottomSheetType.choice,
@@ -32,7 +33,7 @@ Future<void> showMaterialOptions(
       case 'Pin material':
       case 'Unpin material':
         material.pinned = !material.pinned;
-        await _moduleApi.editMaterial(material);
+        await _materialApi.editMaterial(material);
         notifyListeners();
         break;
       case 'Move to topic':
@@ -46,7 +47,7 @@ Future<void> showMaterialOptions(
           final toTopic =
               moduleTopics.firstWhere((topic) => topic.title == response.data);
           await moveToTopicIf(moduleTopics, material, toTopic);
-          await _moduleApi.editMaterial(material);
+          await _materialApi.editMaterial(material);
           notifyListeners();
         }
         break;
@@ -94,7 +95,7 @@ Future<void> showMaterialOptions(
                 material.title = inputs['title'];
                 material.type = inputs['type'];
                 material.url = inputs['url'];
-                await _moduleApi.editMaterial(material);
+                await _materialApi.editMaterial(material);
                 notifyListeners();
                 _navigationService.back();
               },
@@ -113,7 +114,7 @@ Future<void> showMaterialOptions(
           final parentTopic =
               moduleTopics.firstWhere((topic) => topic.id == material.topicId);
           parentTopic.materialIds.remove(material.id);
-          await _moduleApi.deleteMaterial(material);
+          await _materialApi.deleteMaterial(material);
           notifyListeners();
         }
         break;

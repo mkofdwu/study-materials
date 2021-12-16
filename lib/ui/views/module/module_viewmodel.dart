@@ -6,6 +6,7 @@ import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
 import 'package:hackathon_study_materials/ui/widgets/resource_site_selection.dart';
@@ -19,6 +20,7 @@ class ModuleViewModel extends BaseViewModel {
   final _googleSearchService = locator<GoogleSearchService>();
   final _bottomSheetService = locator<BottomSheetService>();
   final _moduleApi = locator<ModuleApiService>();
+  final _materialApi = locator<MaterialApiService>();
 
   final Module _module;
 
@@ -75,7 +77,7 @@ class ModuleViewModel extends BaseViewModel {
                       await _moduleApi.addTopic(_module.id, topicName);
                   for (final found in inputs['materials'][topicName]) {
                     if (found.selected) {
-                      final material = await _moduleApi.addFoundMaterial(
+                      final material = await _materialApi.addFoundMaterial(
                         _userStore.currentUser.id,
                         _module.id,
                         topic.id,
@@ -120,5 +122,5 @@ class ModuleViewModel extends BaseViewModel {
   }
 
   Future<List<StudyMaterial>> getMaterials() =>
-      _moduleApi.getModuleMaterials(_module.id);
+      _materialApi.getMaterials(_module.id);
 }

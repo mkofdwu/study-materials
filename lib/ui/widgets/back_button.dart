@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_study_materials/app/app.locator.dart';
-import 'package:hackathon_study_materials/constants/fluent_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:hackathon_study_materials/ui/widgets/pressed_feedback.dart';
 import 'package:stacked_services/stacked_services.dart';
 

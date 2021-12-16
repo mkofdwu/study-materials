@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/fluent_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:hackathon_study_materials/datamodels/module.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/ui/widgets/back_button.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:hackathon_study_materials/constants/fluent_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 IconData getMaterialIcon(String type) {
   switch (type) {

@@ -1,4 +1,5 @@
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/microsoft_teams_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
@@ -46,10 +47,11 @@ import 'package:stacked_themes/stacked_themes.dart';
     LazySingleton(classType: AuthService),
     LazySingleton(classType: UserApiService),
     LazySingleton(classType: ModuleApiService),
+    LazySingleton(classType: MaterialApiService),
     // other 3rd party services
     LazySingleton(classType: GoogleSearchService),
     LazySingleton(classType: MicrosoftTeamsService),
   ],
-  logger: StackedLogger(),
+  // logger: StackedLogger(),
 )
 class AppSetup {}

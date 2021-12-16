@@ -4,7 +4,7 @@ import 'package:hackathon_study_materials/ui/views/settings/settings_view.dart';
 import 'package:hackathon_study_materials/ui/widgets/material_list_view.dart';
 import 'package:hackathon_study_materials/utils/format_date_time.dart';
 import 'package:stacked/stacked.dart';
-import 'package:hackathon_study_materials/constants/fluent_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import 'home_viewmodel.dart';
 

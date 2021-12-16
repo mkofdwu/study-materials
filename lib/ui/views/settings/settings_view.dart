@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/constants/fluent_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_viewmodel.dart';

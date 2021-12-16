@@ -1,7 +1,7 @@
 import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
-import 'package:hackathon_study_materials/services/api/module_api_service.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -15,7 +15,7 @@ void openMaterial(StudyMaterial material) {
         saveNote: (title, content) async {
           material.title = title;
           material.content = content;
-          await locator<ModuleApiService>().editMaterial(material);
+          await locator<MaterialApiService>().editMaterial(material);
         },
       ),
     );

@@ -3,6 +3,7 @@ import 'package:hackathon_study_materials/app/app.locator.dart';
 import 'package:hackathon_study_materials/app/app.router.dart';
 import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/user.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/services/api/user_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
@@ -14,6 +15,7 @@ class HomeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _userApi = locator<UserApiService>();
   final _moduleApi = locator<ModuleApiService>();
+  final _materialApi = locator<MaterialApiService>();
 
   int currentTab = 0;
   final searchController = TextEditingController();
@@ -53,8 +55,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<List<StudyMaterial>> getRecentMaterials() =>
-      _moduleApi.getRecentMaterials(_userStore.currentUser.id, 8);
+      _materialApi.getRecentMaterials(_userStore.currentUser.id, 8);
 
   Future<List<StudyMaterial>> getSearchResults(String searchQuery) =>
-      _moduleApi.searchForMaterials(_userStore.currentUser.id, searchQuery);
+      _materialApi.searchForMaterials(_userStore.currentUser.id, searchQuery);
 }

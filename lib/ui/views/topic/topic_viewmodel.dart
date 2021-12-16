@@ -5,6 +5,7 @@ import 'package:hackathon_study_materials/datamodels/study_material.dart';
 import 'package:hackathon_study_materials/datamodels/topic.dart';
 import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
 import 'package:hackathon_study_materials/services/api/google_search_service.dart';
+import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
 import 'package:hackathon_study_materials/ui/widgets/resource_site_selection.dart';
@@ -16,6 +17,7 @@ class TopicViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
   final _navigationService = locator<NavigationService>();
   final _moduleApi = locator<ModuleApiService>();
+  final _materialApi = locator<MaterialApiService>();
   final _bottomSheetService = locator<BottomSheetService>();
   final _snackbarService = locator<SnackbarService>();
   final _googleSearchService = locator<GoogleSearchService>();
@@ -72,7 +74,7 @@ class TopicViewModel extends BaseViewModel {
                 // create topic, add materials
                 for (final found in inputs['materials'][_topic.title]) {
                   if (found.selected) {
-                    final material = await _moduleApi.addFoundMaterial(
+                    final material = await _materialApi.addFoundMaterial(
                       _userStore.currentUser.id,
                       _topic.moduleId,
                       _topic.id,
@@ -93,7 +95,7 @@ class TopicViewModel extends BaseViewModel {
   }
 
   Future<List<StudyMaterial>> getMaterials(String? filterByType) =>
-      _moduleApi.getMaterials(
+      _materialApi.getMaterials(
         _topic.moduleId,
         topicId: _topic.id,
         filterByType: filterByType,
@@ -117,7 +119,7 @@ class TopicViewModel extends BaseViewModel {
             return;
           }
 
-          final material = await _moduleApi.addLink(
+          final material = await _materialApi.addLink(
             _userStore.currentUser.id,
             _topic.moduleId,
             _topic.id,
@@ -139,7 +141,7 @@ class TopicViewModel extends BaseViewModel {
         title: '',
         content: '',
         saveNote: (title, content) async {
-          final material = await _moduleApi.addNote(
+          final material = await _materialApi.addNote(
             _userStore.currentUser.id,
             _topic.moduleId,
             _topic.id,
