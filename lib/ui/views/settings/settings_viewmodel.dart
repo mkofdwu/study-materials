@@ -24,7 +24,6 @@ class SettingsViewModel extends BaseViewModel {
   int get numResults => _userStore.currentUser.numResults;
 
   void addResourceSite() {
-    // TODO: validate url
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
       arguments: FlexibleFormPageArguments(
@@ -59,7 +58,6 @@ class SettingsViewModel extends BaseViewModel {
   }
 
   void editResourceSite(ResourceSite resourceSite) {
-    // TODO: validate url
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
       arguments: FlexibleFormPageArguments(
@@ -78,7 +76,9 @@ class SettingsViewModel extends BaseViewModel {
           final errors = {
             if (inputs['title'].isEmpty) 'title': 'Please enter a title',
             if (inputs['siteUrl'].isEmpty)
-              'siteUrl': 'Please enter the site url',
+              'siteUrl': 'Please enter the site url'
+            else if (!(inputs['siteUrl'] as String).isURL)
+              'siteUrl': 'This is not a valid url',
           };
           if (errors.isNotEmpty) {
             setErrors(errors);
