@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.1.1+1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -33,12 +33,11 @@ dependencies:
   stacked: ^2.0.0
   stacked_services: ^0.8.0-nullsafety.1
   stacked_themes: ^0.3.0
-  observable_ish: ^3.0.0
 
   firebase_core: ^1.0.2
-  firebase_auth: ^1.0.1
-  firebase_storage: ^8.0.1
-  cloud_firestore: ^1.0.3
+  firebase_auth: ^3.3.3
+  firebase_storage: ^10.2.3
+  cloud_firestore: ^3.1.4
 
   cached_network_image: ^3.0.0
   http: ^0.13.4
@@ -52,8 +51,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^1.12.2
-  stacked_generator: ^0.3.3
+  build_runner: ^2.1.5
+  stacked_generator: ^0.5.6
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

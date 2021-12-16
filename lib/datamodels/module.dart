@@ -17,7 +17,8 @@ class Module {
     required this.topics,
   });
 
-  factory Module.fromDoc(DocumentSnapshot doc, List<Topic> topics) {
+  factory Module.fromDoc(
+      DocumentSnapshot<Map<String, dynamic>> doc, List<Topic> topics) {
     final data = doc.data()!;
     return Module(
       id: doc.id,

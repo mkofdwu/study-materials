@@ -20,7 +20,7 @@ class User {
     required this.numResults,
   });
 
-  factory User.fromDoc(DocumentSnapshot doc) {
+  factory User.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     return User(
       id: doc.id,

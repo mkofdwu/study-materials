@@ -25,7 +25,7 @@ class StudyMaterial {
     required this.dateCreated,
   });
 
-  factory StudyMaterial.fromDoc(DocumentSnapshot doc) {
+  factory StudyMaterial.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     return StudyMaterial(
       id: doc.id,

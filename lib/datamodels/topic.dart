@@ -13,7 +13,7 @@ class Topic {
     required this.materialIds,
   });
 
-  factory Topic.fromDoc(DocumentSnapshot doc) {
+  factory Topic.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     return Topic(
       id: doc.id,

@@ -133,7 +133,7 @@ class ModuleApiService {
       query = _materialsRef.where('ownerId', isEqualTo: ownerId);
     }
     // TODO: this could be optimized
-    final snapshot = await query.get();
+    final snapshot = (await query.get()) as QuerySnapshot<Map<String, dynamic>>;
     return snapshot.docs
         .where((doc) => (doc.data()['title'] as String)
             .toLowerCase()
@@ -167,7 +167,7 @@ class ModuleApiService {
       query = query.orderBy(sortBy, descending: descending);
     }
 
-    final snapshot = await query.get();
+    final snapshot = await query.get() as QuerySnapshot<Map<String, dynamic>>;
     return snapshot.docs.map((doc) => StudyMaterial.fromDoc(doc)).toList();
   }
 
