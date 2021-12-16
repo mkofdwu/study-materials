@@ -32,7 +32,7 @@ class MaterialListView extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20),
             child: Center(
               child: CircularProgressIndicator(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
           );

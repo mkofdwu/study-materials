@@ -97,6 +97,7 @@ Future<void> showMaterialOptions(
                 material.url = inputs['url'];
                 await _materialApi.editMaterial(material);
                 notifyListeners();
+                setErrors({});
                 _navigationService.back();
               },
             ),

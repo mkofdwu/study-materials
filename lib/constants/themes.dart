@@ -8,7 +8,9 @@ final kLightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primaryColor: Colors.black, // color for text and everything
   primaryColorLight: Palette.lightGrey,
-  accentColor: Palette.darkGrey,
+  colorScheme: ColorScheme.fromSwatch(
+    accentColor: Palette.darkGrey,
+  ),
 );
 
 final kDarkTheme = kLightTheme.copyWith(
@@ -17,7 +19,9 @@ final kDarkTheme = kLightTheme.copyWith(
   scaffoldBackgroundColor: Color(0xFF111111),
   primaryColor: Colors.white, // color for text and everything
   primaryColorLight: Palette.darkGrey,
-  accentColor: Palette.lightGrey,
+  colorScheme: ColorScheme.fromSwatch(
+    accentColor: Palette.lightGrey,
+  ),
   textTheme: TextTheme(
     bodyText1: TextStyle(color: Colors.white),
   ),

@@ -51,6 +51,7 @@ class SettingsViewModel extends BaseViewModel {
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
+          setErrors({});
           _navigationService.back();
         },
       ),
@@ -92,6 +93,7 @@ class SettingsViewModel extends BaseViewModel {
           // could be more efficient:
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners(); // update display in this page
+          setErrors({});
           _navigationService.back();
         },
       ),

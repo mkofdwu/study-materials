@@ -45,8 +45,12 @@ class TopicViewModel extends BaseViewModel {
         onSubmit: (inputs, setErrors) async {
           String searchQuery = inputs['searchQuery'];
           if (searchQuery.isEmpty) {
-            // TODO: only allow alphanumeric characters
             setErrors({'searchQuery': 'Please enter a query'});
+            return;
+          }
+          if (!RegExp(r"^[a-zA-Z0-9_\- ]+$").hasMatch(inputs['searchQuery'])) {
+            setErrors(
+                {'topicNames': 'You can only enter alphanumeric characters'});
             return;
           }
 
@@ -57,6 +61,7 @@ class TopicViewModel extends BaseViewModel {
             inputs['resourceSites'],
             _userStore.currentUser.numResults,
           );
+          setErrors({});
 
           _navigationService.navigateTo(
             Routes.flexibleFormPage,
@@ -84,6 +89,7 @@ class TopicViewModel extends BaseViewModel {
                   }
                 }
                 notifyListeners();
+                setErrors({});
                 _navigationService.back();
                 _navigationService.back();
               },
@@ -128,6 +134,7 @@ class TopicViewModel extends BaseViewModel {
           );
           _topic.materialIds.add(material.id);
           notifyListeners();
+          setErrors({});
           _navigationService.back();
         },
       ),

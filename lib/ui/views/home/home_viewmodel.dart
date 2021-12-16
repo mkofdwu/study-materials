@@ -48,6 +48,7 @@ class HomeViewModel extends BaseViewModel {
           _userStore.currentUser.modules!.add(module);
           await _userApi.setUserData(_userStore.currentUser);
           notifyListeners();
+          setErrors({});
           _navigationService.back();
         },
       ),

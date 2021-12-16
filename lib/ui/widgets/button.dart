@@ -45,7 +45,7 @@ class _MyButtonState extends State<MyButton> {
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
         decoration: BoxDecoration(
           color: widget.isPrimary
-              ? Theme.of(context).accentColor
+              ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).primaryColorLight,
           borderRadius: BorderRadius.circular(20),
         ),

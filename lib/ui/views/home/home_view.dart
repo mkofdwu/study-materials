@@ -23,7 +23,7 @@ class HomeView extends StatelessWidget {
                   FluentIcons.add_20_regular,
                   color: Theme.of(context).backgroundColor,
                 ),
-                backgroundColor: Theme.of(context).accentColor,
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 onPressed: model.goToAddModule,
               )
             : null,

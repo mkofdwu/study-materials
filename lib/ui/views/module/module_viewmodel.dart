@@ -41,11 +41,14 @@ class ModuleViewModel extends BaseViewModel {
         onSubmit: (inputs, setErrors) async {
           final topicNames = inputs['topicNames'] as String;
           if (topicNames.isEmpty) {
-            // TODO: only allow alphanumeric characters
             setErrors({'topicNames': 'Please enter at least one topic'});
             return;
           }
-
+          if (!RegExp(r"^[a-zA-Z0-9_\-, ]+$").hasMatch(topicNames)) {
+            setErrors(
+                {'topicNames': 'You can only enter alphanumeric characters'});
+            return;
+          }
           final topicToFound = <String, List<FoundMaterial>>{};
           for (String name in topicNames.split(',')) {
             name = name.trim();
@@ -57,6 +60,7 @@ class ModuleViewModel extends BaseViewModel {
             );
             topicToFound[name] = foundMaterials;
           }
+          setErrors({});
 
           _navigationService.navigateTo(
             Routes.flexibleFormPage,
@@ -89,6 +93,7 @@ class ModuleViewModel extends BaseViewModel {
                   _module.topics.add(topic);
                 }
                 notifyListeners();
+                setErrors({});
                 _navigationService.back();
                 _navigationService.back();
               },

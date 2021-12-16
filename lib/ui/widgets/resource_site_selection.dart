@@ -36,8 +36,9 @@ class _ResourceSiteSelectionState extends State<ResourceSiteSelection> {
                   height: 24,
                   width: 24,
                   child: Checkbox(
-                    side: BorderSide(color: Theme.of(context).accentColor),
-                    activeColor: Theme.of(context).accentColor,
+                    side: BorderSide(
+                        color: Theme.of(context).colorScheme.secondary),
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     checkColor: Theme.of(context).backgroundColor,
                     value: _selection.length == widget.resourceSites.length,
                     onChanged: (selected) {
@@ -65,8 +66,9 @@ class _ResourceSiteSelectionState extends State<ResourceSiteSelection> {
                       height: 24,
                       width: 24,
                       child: Checkbox(
-                        side: BorderSide(color: Theme.of(context).accentColor),
-                        activeColor: Theme.of(context).accentColor,
+                        side: BorderSide(
+                            color: Theme.of(context).colorScheme.secondary),
+                        activeColor: Theme.of(context).colorScheme.secondary,
                         checkColor: Theme.of(context).backgroundColor,
                         value: _selection.contains(resourceSite),
                         onChanged: (selected) {
