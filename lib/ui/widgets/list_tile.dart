@@ -20,73 +20,83 @@ class MyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                border: iconData == null
-                    ? null
-                    : Border.all(
-                        color: Theme.of(context).primaryColor.withOpacity(0.1)),
-                color: iconData == null ? Color(color!) : null,
-              ),
-              child: Center(
-                child: iconData == null
-                    ? Text(
-                        title[0].toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    : Icon(iconData, color: Theme.of(context).primaryColor),
-              ),
-            ),
-            SizedBox(width: 18),
-            Expanded(
-              child: GestureDetector(
-                onTap: onPressed,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(height: 6),
-                    Text(
-                      subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor.withOpacity(0.8),
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: onPressed,
+      child: Material(
+        // makes entire tile clickable
+        color: Colors.transparent,
+        child: Row(
+          children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    border: iconData == null
+                        ? null
+                        : Border.all(
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withOpacity(0.1)),
+                    color: iconData == null ? Color(color!) : null,
+                  ),
+                  child: Center(
+                    child: iconData == null
+                        ? Text(
+                            title[0].toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )
+                        : Icon(iconData, color: Theme.of(context).primaryColor),
+                  ),
                 ),
-              ),
-            ),
-          ] +
-          suffixIcons
-              .map((iconData, onTapIcon) => MapEntry(
-                    iconData,
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: GestureDetector(
-                        onTap: onTapIcon,
-                        child: Icon(iconData, size: 20),
+                SizedBox(width: 18),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
-                  ))
-              .values
-              .toList(),
+                      SizedBox(height: 6),
+                      Text(
+                        subtitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.8),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ] +
+              suffixIcons
+                  .map((iconData, onTapIcon) => MapEntry(
+                        iconData,
+                        GestureDetector(
+                          onTap: onTapIcon,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
+                            child: Icon(iconData, size: 20),
+                          ),
+                        ),
+                      ))
+                  .values
+                  .toList(),
+        ),
+      ),
     );
   }
 }

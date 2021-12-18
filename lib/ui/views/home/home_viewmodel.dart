@@ -7,14 +7,13 @@ import 'package:hackathon_study_materials/services/api/material_api_service.dart
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/services/api/user_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
+import 'package:hackathon_study_materials/ui/forms/add_module.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class HomeViewModel extends BaseViewModel {
   final _userStore = locator<UserStore>();
   final _navigationService = locator<NavigationService>();
-  final _userApi = locator<UserApiService>();
-  final _moduleApi = locator<ModuleApiService>();
   final _materialApi = locator<MaterialApiService>();
 
   int currentTab = 0;
@@ -30,28 +29,7 @@ class HomeViewModel extends BaseViewModel {
   void goToAddModule() {
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
-      arguments: FlexibleFormPageArguments(
-        title: 'Add module',
-        fieldsToWidgets: {
-          'moduleName': 'TextField:Module name',
-        },
-        onSubmit: (inputs, setErrors) async {
-          if (inputs['moduleName'].isEmpty) {
-            setErrors({'moduleName': 'Please enter a name'});
-            return;
-          }
-          final module = await _moduleApi.addModule(
-            _userStore.currentUser.id,
-            inputs['moduleName'],
-          );
-          _userStore.currentUser.moduleIds.add(module.id);
-          _userStore.currentUser.modules!.add(module);
-          await _userApi.setUserData(_userStore.currentUser);
-          notifyListeners();
-          setErrors({});
-          _navigationService.back();
-        },
-      ),
+      arguments: addModuleForm(notifyListeners),
     );
   }
 

@@ -8,6 +8,8 @@ import 'package:hackathon_study_materials/services/api/google_search_service.dar
 import 'package:hackathon_study_materials/services/api/material_api_service.dart';
 import 'package:hackathon_study_materials/services/api/module_api_service.dart';
 import 'package:hackathon_study_materials/stores/user_store.dart';
+import 'package:hackathon_study_materials/ui/forms/add_link.dart';
+import 'package:hackathon_study_materials/ui/forms/find_more_material.dart';
 import 'package:hackathon_study_materials/ui/widgets/resource_site_selection.dart';
 import 'package:hackathon_study_materials/ui/widgets/review_found/review_found_view.dart';
 import 'package:stacked/stacked.dart';
@@ -32,71 +34,7 @@ class TopicViewModel extends BaseViewModel {
   void goToFindMaterial() {
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
-      arguments: FlexibleFormPageArguments(
-        title: 'Find more material',
-        subtitle: 'Add to topic "${_topic.title}"',
-        fieldsToWidgets: {
-          'searchQuery': 'TextField:Search query',
-          'resourceSites': (onValueChanged) => ResourceSiteSelection(
-                resourceSites: _userStore.currentUser.resourceSites,
-                onValueChanged: onValueChanged,
-              ),
-        },
-        onSubmit: (inputs, setErrors) async {
-          String searchQuery = inputs['searchQuery'];
-          if (searchQuery.isEmpty) {
-            setErrors({'searchQuery': 'Please enter a query'});
-            return;
-          }
-          if (!RegExp(r"^[a-zA-Z0-9_\- ]+$").hasMatch(inputs['searchQuery'])) {
-            setErrors(
-                {'topicNames': 'You can only enter alphanumeric characters'});
-            return;
-          }
-
-          searchQuery = searchQuery.trim();
-          final foundMaterials = await _googleSearchService.findMaterials(
-            _topic.title,
-            searchQuery,
-            inputs['resourceSites'],
-            _userStore.currentUser.numResults,
-          );
-          setErrors({});
-
-          _navigationService.navigateTo(
-            Routes.flexibleFormPage,
-            arguments: FlexibleFormPageArguments(
-              title: 'Review materials',
-              subtitle:
-                  "We've gathered some study material you may be interested in. Choose which to add to '${_topic.title}'",
-              fieldsToWidgets: {
-                'materials': (onValueChanged) => ReviewFoundView(
-                      topicToFound: {_topic.title: foundMaterials},
-                      onValueChanged: onValueChanged,
-                    ),
-              },
-              onSubmit: (inputs, setErrors) async {
-                // create topic, add materials
-                for (final found in inputs['materials'][_topic.title]) {
-                  if (found.selected) {
-                    final material = await _materialApi.addFoundMaterial(
-                      _userStore.currentUser.id,
-                      _topic.moduleId,
-                      _topic.id,
-                      found,
-                    );
-                    _topic.materialIds.add(material.id);
-                  }
-                }
-                notifyListeners();
-                setErrors({});
-                _navigationService.back();
-                _navigationService.back();
-              },
-            ),
-          );
-        },
-      ),
+      arguments: findMoreMaterialForm(notifyListeners, _topic),
     );
   }
 
@@ -110,34 +48,7 @@ class TopicViewModel extends BaseViewModel {
   void goToAddLink() {
     _navigationService.navigateTo(
       Routes.flexibleFormPage,
-      arguments: FlexibleFormPageArguments(
-        title: 'Add material by url',
-        subtitle: 'Add to topic "${_topic.title}"',
-        fieldsToWidgets: {'title': 'TextField:Title', 'link': 'TextField:Link'},
-        onSubmit: (inputs, setErrors) async {
-          final errors = {
-            if (inputs['title'].isEmpty) 'title': 'Give this material a title',
-            if (inputs['link'].isEmpty)
-              'link': 'Please enter a link to the study material',
-          };
-          if (errors.isNotEmpty) {
-            setErrors(errors);
-            return;
-          }
-
-          final material = await _materialApi.addLink(
-            _userStore.currentUser.id,
-            _topic.moduleId,
-            _topic.id,
-            inputs['title'],
-            inputs['link'],
-          );
-          _topic.materialIds.add(material.id);
-          notifyListeners();
-          setErrors({});
-          _navigationService.back();
-        },
-      ),
+      arguments: addLinkForm(notifyListeners, _topic),
     );
   }
 
