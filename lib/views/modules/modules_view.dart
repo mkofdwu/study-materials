@@ -37,8 +37,13 @@ class ModulesView extends StatelessWidget {
             future: controller.getModules(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Get.theme.colorScheme.secondary,
+                    ),
+                  ),
                 );
               }
               return Column(
