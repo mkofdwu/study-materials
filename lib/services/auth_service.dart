@@ -1,24 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:get/get.dart';
 import 'package:hackathon_study_materials/constants/default_resource_sites.dart';
-import 'package:hackathon_study_materials/datamodels/user.dart';
-import 'package:hackathon_study_materials/app/app.locator.dart';
-import 'package:hackathon_study_materials/stores/user_store.dart';
-import 'package:hackathon_study_materials/services/api/user_api_service.dart';
+import 'package:hackathon_study_materials/models/user.dart';
+import 'package:hackathon_study_materials/services/db_user_service.dart';
 
-class AuthService {
-  final _userStore = locator<UserStore>();
-  final _userApi = locator<UserApiService>();
+class AuthService extends GetxService {
+  final _userApi = Get.find<DbUserService>();
 
   final _fbAuth = fb.FirebaseAuth.instance;
 
+  User? _currentUser;
+
+  bool get isSignedIn => _currentUser != null;
+  User get currentUser => _currentUser!;
+
   Future<void> refreshCurrentUser() async {
     if (_fbAuth.currentUser != null) {
-      _userStore.currentUser = await _userApi.getUser(_fbAuth.currentUser!.uid);
+      _currentUser = await _userApi.getUser(_fbAuth.currentUser!.uid);
     }
   }
 
-  Future<Map<String, String>> signIn(
-      {required String email, required String password}) async {
+  Future<Map<String, String>> signIn({
+    required String email,
+    required String password,
+  }) async {
     // returns errors
     final errors = {
       if (email.isEmpty) 'email': 'Please enter a email',
@@ -72,15 +77,21 @@ class AuthService {
     }
   }
 
-  Future<void> signOut() => _fbAuth.signOut();
+  Future<void> signOut() async {
+    await _fbAuth.signOut();
+    _currentUser = null;
+  }
 
   Future<void> deleteAccount() async {
-    await _userApi.deleteUser(_userStore.currentUser.id);
+    if (_fbAuth.currentUser == null) return;
+    await _userApi.deleteUser(_fbAuth.currentUser!.uid);
     await _fbAuth.currentUser!.delete();
+    _currentUser = null;
   }
 
   Future<void> updateEmail(String newEmail) async {
+    if (_fbAuth.currentUser == null) return;
     await _fbAuth.currentUser!.updateEmail(newEmail);
-    _userStore.currentUser.email = newEmail;
+    _currentUser!.email = newEmail;
   }
 }

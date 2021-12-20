@@ -1,64 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_study_materials/app/app.locator.dart';
-import 'package:hackathon_study_materials/app/app.router.dart';
-import 'package:hackathon_study_materials/datamodels/study_material.dart';
-import 'package:hackathon_study_materials/datamodels/topic.dart';
-import 'package:hackathon_study_materials/enums/bottom_sheet_type.dart';
-import 'package:hackathon_study_materials/services/api/material_api_service.dart';
-import 'package:hackathon_study_materials/services/api/module_api_service.dart';
+import 'package:get/get.dart';
+import 'package:hackathon_study_materials/models/study_material.dart';
+import 'package:hackathon_study_materials/models/topic.dart';
+import 'package:hackathon_study_materials/services/db_material_service.dart';
+import 'package:hackathon_study_materials/services/db_module_service.dart';
 import 'package:hackathon_study_materials/utils/open_material.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form.dart';
+import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form_view.dart';
+import 'package:hackathon_study_materials/widgets/choice_bottom_sheet.dart';
+import 'package:hackathon_study_materials/widgets/yesno_bottom_sheet.dart';
 
 Future<void> showMaterialOptions(
+  Function update,
   List<Topic> moduleTopics, // possible topics to switch between
   StudyMaterial material,
-  Function notifyListeners,
 ) async {
-  final _bottomSheetService = locator<BottomSheetService>();
-  final _materialApi = locator<MaterialApiService>();
+  final _materialApi = Get.find<DbMaterialService>();
 
-  final response = await _bottomSheetService.showCustomSheet(
-    variant: BottomSheetType.choice,
+  final choice = await Get.bottomSheet(ChoiceBottomSheet(
     title: material.title,
-    data: [
+    choices: [
       material.pinned ? 'Unpin material' : 'Pin material',
       'Move to topic',
       'Edit details',
       'Delete material',
     ],
-  );
+  ));
 
-  if (response != null && response.confirmed) {
-    switch (response.data) {
+  if (choice != null) {
+    switch (choice) {
       case 'Pin material':
       case 'Unpin material':
         material.pinned = !material.pinned;
         await _materialApi.editMaterial(material);
-        notifyListeners();
+        update();
         break;
       case 'Move to topic':
-        final response = await _bottomSheetService.showCustomSheet(
-          variant: BottomSheetType.choice,
+        final choice = await Get.bottomSheet(ChoiceBottomSheet(
           title: 'Move material',
-          description: "Select a topic to move '${material.title}' to",
-          data: moduleTopics.map((topic) => topic.title).toList(),
-        );
-        if (response != null && response.confirmed) {
+          subtitle: "Select a topic to move '${material.title}' to",
+          choices: moduleTopics.map((topic) => topic.title).toList(),
+        ));
+        if (choice != null) {
           final toTopic =
-              moduleTopics.firstWhere((topic) => topic.title == response.data);
+              moduleTopics.firstWhere((topic) => topic.title == choice);
           await moveToTopicIf(moduleTopics, material, toTopic);
           await _materialApi.editMaterial(material);
-          notifyListeners();
+          update();
         }
         break;
       case 'Edit details':
         if (material.type == 'Note') {
           openMaterial(material);
         } else {
-          final _navigationService = locator<NavigationService>();
-          _navigationService.navigateTo(
-            Routes.flexibleFormPage,
-            arguments: FlexibleFormPageArguments(
+          Get.to(FlexibleFormView(
+            form: FlexibleForm(
               title: 'Edit material details',
               subtitle: material.title,
               fieldsToWidgets: {
@@ -96,27 +92,26 @@ Future<void> showMaterialOptions(
                 material.type = inputs['type'];
                 material.url = inputs['url'];
                 await _materialApi.editMaterial(material);
-                notifyListeners();
+                update();
                 setErrors({});
-                _navigationService.back();
+                Get.back();
               },
             ),
-          );
+          ));
         }
         break;
       case 'Delete material':
-        final response = await _bottomSheetService.showCustomSheet(
-          variant: BottomSheetType.yesno,
+        final confirmed = await Get.bottomSheet(YesNoBottomSheet(
           title: 'Delete material?',
-          description:
+          subtitle:
               "The material '${material.title}' will be from your library. This action is irriversible!",
-        );
-        if (response != null && response.confirmed) {
+        ));
+        if (confirmed) {
           final parentTopic =
               moduleTopics.firstWhere((topic) => topic.id == material.topicId);
           parentTopic.materialIds.remove(material.id);
           await _materialApi.deleteMaterial(material);
-          notifyListeners();
+          update();
         }
         break;
     }
@@ -156,7 +151,7 @@ class _TopicSelectorState extends State<TopicSelector> {
         Text(
           'Topic',
           style: TextStyle(
-            color: Theme.of(context).primaryColor.withOpacity(0.4),
+            color: Get.theme.primaryColor.withOpacity(0.4),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -187,7 +182,7 @@ Future<void> moveToTopicIf(
   StudyMaterial material,
   Topic toTopic,
 ) async {
-  final _moduleApi = locator<ModuleApiService>();
+  final _moduleApi = Get.find<DbModuleService>();
 
   if (toTopic.id != material.topicId) {
     // move from one topic to another

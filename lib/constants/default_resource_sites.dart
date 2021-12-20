@@ -1,4 +1,4 @@
-import 'package:hackathon_study_materials/datamodels/resource_site.dart';
+import 'package:hackathon_study_materials/models/resource_site.dart';
 
 final defaultResourceSites = [
   ResourceSite(

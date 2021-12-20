@@ -1,24 +1,20 @@
-import 'package:hackathon_study_materials/app/app.locator.dart';
-import 'package:hackathon_study_materials/app/app.router.dart';
-import 'package:hackathon_study_materials/datamodels/study_material.dart';
-import 'package:hackathon_study_materials/services/api/material_api_service.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:get/get.dart';
+import 'package:hackathon_study_materials/models/study_material.dart';
+import 'package:hackathon_study_materials/services/db_material_service.dart';
+import 'package:hackathon_study_materials/views/note/note_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void openMaterial(StudyMaterial material) {
   if (material.type == 'Note') {
-    locator<NavigationService>().navigateTo(
-      Routes.noteView,
-      arguments: NoteViewArguments(
-        title: material.title,
-        content: material.content!,
-        saveNote: (title, content) async {
-          material.title = title;
-          material.content = content;
-          await locator<MaterialApiService>().editMaterial(material);
-        },
-      ),
-    );
+    Get.to(NoteView(
+      title: material.title,
+      content: material.content!,
+      saveNote: (title, content) async {
+        material.title = title;
+        material.content = content;
+        await Get.find<DbMaterialService>().editMaterial(material);
+      },
+    ));
   } else {
     if (material.url.startsWith(RegExp(r'https?://'))) {
       launch(material.url);
