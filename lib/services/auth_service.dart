@@ -17,6 +17,7 @@ class AuthService extends GetxService {
   Future<void> refreshCurrentUser() async {
     if (_fbAuth.currentUser != null) {
       _currentUser = await _userApi.getUser(_fbAuth.currentUser!.uid);
+      // load modules
     }
   }
 

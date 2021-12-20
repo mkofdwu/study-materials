@@ -23,7 +23,6 @@ FlexibleForm addModuleForm(Function update) => FlexibleForm(
           inputs['moduleName'],
         );
         _authService.currentUser.moduleIds.add(module.id);
-        _authService.currentUser.modules!.add(module);
         await _userApi.setUserData(_authService.currentUser);
         update();
         setErrors({});

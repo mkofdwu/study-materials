@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hackathon_study_materials/constants/themes.dart';
 import 'package:hackathon_study_materials/utils/init_services.dart';
-import 'package:hackathon_study_materials/views/welcome_view.dart';
+import 'package:hackathon_study_materials/views/startup/startup_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: kLightTheme,
       darkTheme: kDarkTheme,
-      home: WelcomeView(),
+      home: StartupView(),
     );
   }
 }

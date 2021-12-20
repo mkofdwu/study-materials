@@ -42,7 +42,6 @@ Future<void> showModuleOptions(
         ));
         if (confirmed) {
           _authService.currentUser.moduleIds.remove(module.id);
-          _authService.currentUser.modules?.remove(module);
           await _moduleApi.deleteModule(module);
           update();
           if (backOnDelete) Get.back();

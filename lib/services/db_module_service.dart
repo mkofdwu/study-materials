@@ -7,13 +7,22 @@ import 'package:hackathon_study_materials/utils/random_color.dart';
 class DbModuleService extends GetxService {
   final _modulesRef = FirebaseFirestore.instance.collection('modules');
 
-  Future<List<Module>> getModules(List<String> moduleIds) async {
+  Future<Module> getModule(String moduleId) async {
+    final moduleDoc = await _modulesRef.doc(moduleId).get();
+    final topicsSnap = await moduleDoc.reference.collection('topics').get();
+    final topics =
+        topicsSnap.docs.map((topicDoc) => Topic.fromDoc(topicDoc)).toList();
+    return Module.fromDoc(moduleDoc, topics);
+  }
+
+  Future<List<Module>> getUserModules(String ownerId) async {
+    final modulesSnap =
+        await _modulesRef.where('ownerId', isEqualTo: ownerId).get();
     final modules = <Module>[];
-    for (final moduleId in moduleIds) {
-      final moduleDoc = await _modulesRef.doc(moduleId).get();
-      final topicDocs = await moduleDoc.reference.collection('topics').get();
+    for (final moduleDoc in modulesSnap.docs) {
+      final topicsSnap = await moduleDoc.reference.collection('topics').get();
       final topics =
-          topicDocs.docs.map((topicDoc) => Topic.fromDoc(topicDoc)).toList();
+          topicsSnap.docs.map((topicDoc) => Topic.fromDoc(topicDoc)).toList();
       modules.add(Module.fromDoc(moduleDoc, topics));
     }
     return modules;

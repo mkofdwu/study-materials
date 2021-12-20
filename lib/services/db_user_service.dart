@@ -13,8 +13,6 @@ class DbUserService extends GetxService {
   Future<User> getUser(String userId) async {
     final userDoc = await _usersRef.doc(userId).get();
     final user = User.fromDoc(userDoc);
-    // messy solution
-    // user.modules = await _moduleApi.getModules(user.moduleIds);
     return user;
   }
 

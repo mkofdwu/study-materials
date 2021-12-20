@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hackathon_study_materials/models/module.dart';
 import 'package:hackathon_study_materials/models/resource_site.dart';
 
 class User {
   String id;
   String email;
-  List<String> moduleIds; // ids of modules
-  List<Module>? modules; // this could be loaded differently
-  // currently modules are fetched after user object is created (in user api)
+  List<String> moduleIds;
   // settings
-  List<ResourceSite> resourceSites; // name: url
+  List<ResourceSite> resourceSites;
   int numResults;
 
   User({
