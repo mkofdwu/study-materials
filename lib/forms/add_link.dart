@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hackathon_study_materials/models/topic.dart';
 import 'package:hackathon_study_materials/services/db_material_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form.dart';
 
 final _materialApi = Get.find<DbMaterialService>();
 final _authService = Get.find<AuthService>();

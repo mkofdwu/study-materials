@@ -24,8 +24,6 @@ class ModulesView extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
               ),
               Spacer(),
-              // GestureDetector(child: Icon(FluentIcons.filter_24_regular)),
-              // SizedBox(width: 24),
               GestureDetector(
                 child: Icon(FluentIcons.search_24_regular),
                 onTap: controller.goToSearch,

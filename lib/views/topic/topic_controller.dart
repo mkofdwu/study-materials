@@ -7,7 +7,7 @@ import 'package:hackathon_study_materials/services/db_module_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/forms/add_link.dart';
 import 'package:hackathon_study_materials/forms/find_more_material.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form_view.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form_view.dart';
 import 'package:hackathon_study_materials/views/note/note_view.dart';
 import 'package:hackathon_study_materials/views/search/search_view.dart';
 import 'package:hackathon_study_materials/widgets/choice_bottom_sheet.dart';

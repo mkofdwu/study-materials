@@ -3,8 +3,8 @@ import 'package:hackathon_study_materials/models/topic.dart';
 import 'package:hackathon_study_materials/services/google_search_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/forms/review_materials.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form_view.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form_view.dart';
 import 'package:hackathon_study_materials/widgets/resource_site_selection.dart';
 
 final _authService = Get.find<AuthService>();

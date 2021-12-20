@@ -4,7 +4,7 @@ import 'package:hackathon_study_materials/models/resource_site.dart';
 import 'package:hackathon_study_materials/services/db_user_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/forms/resource_site.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form_view.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form_view.dart';
 import 'package:hackathon_study_materials/views/welcome_view.dart';
 import 'package:hackathon_study_materials/widgets/yesno_bottom_sheet.dart';
 
@@ -52,10 +52,12 @@ class SettingsController extends GetxController {
 
   void goToProfile() {}
 
-  bool get isDarkMode => Get.isDarkMode;
+  // get is not updating for some reason, so a separate variable is used
+  bool isDarkMode = Get.isDarkMode;
 
   void toggleDarkMode() {
-    Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+    isDarkMode = !isDarkMode;
+    Get.changeThemeMode(isDarkMode ? ThemeMode.dark : ThemeMode.light);
     update();
   }
 

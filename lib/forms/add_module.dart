@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hackathon_study_materials/services/db_module_service.dart';
 import 'package:hackathon_study_materials/services/db_user_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form.dart';
 
 final _moduleApi = Get.find<DbModuleService>();
 final _authService = Get.find<AuthService>();

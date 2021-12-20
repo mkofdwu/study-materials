@@ -9,7 +9,7 @@ class FlexibleFormController extends GetxController {
   Map<String, String> inputErrors = {};
   bool isLoading = false;
 
-  FlexibleForm _form;
+  final FlexibleForm _form;
 
   FlexibleFormController(this._form);
 

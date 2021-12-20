@@ -5,7 +5,7 @@ import 'package:hackathon_study_materials/models/user.dart';
 import 'package:hackathon_study_materials/services/db_material_service.dart';
 import 'package:hackathon_study_materials/services/auth_service.dart';
 import 'package:hackathon_study_materials/forms/add_module.dart';
-import 'package:hackathon_study_materials/views/flexible_form_page/flexible_form_view.dart';
+import 'package:hackathon_study_materials/views/flexible_form/flexible_form_view.dart';
 
 class HomeController extends GetxController {
   final _authService = Get.find<AuthService>();

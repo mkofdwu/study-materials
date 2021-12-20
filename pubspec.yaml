@@ -38,19 +38,13 @@ dependencies:
   cloud_firestore: ^3.1.4
   fluentui_system_icons: ^1.1.153
 
-  cached_network_image: ^3.0.0
   http: ^0.13.4
   url_launcher: ^6.0.17
   aad_oauth: ^0.3.0
 
-dependency_overrides:
-  flutter_statusbarcolor_ns: ^0.4.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  build_runner: ^2.1.5
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -100,12 +94,6 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   fonts:
-    - family: FluentIconsRegular
-      fonts:
-        - asset: assets/fonts/FluentSystemIcons-Regular.ttf
-    - family: FluentIconsFilled
-      fonts:
-        - asset: assets/fonts/FluentSystemIcons-Filled.ttf
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf
